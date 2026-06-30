@@ -132,4 +132,31 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  /* ---------- Accordions (FAQ etc.) ---------- */
+  var accordionItems = document.querySelectorAll('.accordion-item');
+
+  function setAccordionHeight(item) {
+    var content = item.querySelector('.accordion-content');
+    if (!content) return;
+    content.style.maxHeight = item.classList.contains('open') ? content.scrollHeight + 'px' : '';
+  }
+
+  accordionItems.forEach(function (item) {
+    var trigger = item.querySelector('.accordion-trigger');
+    if (!trigger) return;
+    if (item.classList.contains('open')) setAccordionHeight(item);
+    trigger.addEventListener('click', function () {
+      item.classList.toggle('open');
+      setAccordionHeight(item);
+    });
+  });
+
+  if (accordionItems.length) {
+    window.addEventListener('resize', function () {
+      accordionItems.forEach(function (item) {
+        if (item.classList.contains('open')) setAccordionHeight(item);
+      });
+    }, { passive: true });
+  }
+
 });
