@@ -206,6 +206,17 @@ input:focus-visible,
   color: var(--orange);
 }
 
+/* Content image placeholder. Shows a neutral box until the real WebP exists
+   at the inline background-image path (added in Stage 4); the photo then
+   appears with no markup change. Aspect ratio / radius are set inline. */
+.img-placeholder {
+  width: 100%;
+  background-color: #d9dde1;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 /* Trust pill */
 .trust-pill {
   display: inline-flex;
