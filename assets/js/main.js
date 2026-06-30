@@ -190,4 +190,43 @@ document.addEventListener('DOMContentLoaded', function () {
     }, { passive: true });
   }
 
+  /* ---------- Before/after gallery (filter + per-card image toggle) ---------- */
+  var baCards = document.querySelectorAll('[data-ba-card]');
+  if (baCards.length) {
+    // Per-card "Show Before / Show After" image toggle
+    baCards.forEach(function (card) {
+      var imgEl = card.querySelector('[data-ba-img]');
+      var toggleBtn = card.querySelector('[data-ba-toggle]');
+      if (!imgEl || !toggleBtn) return;
+      var labelEl = toggleBtn.querySelector('[data-ba-label]');
+      var showingAfter = true;
+      toggleBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        showingAfter = !showingAfter;
+        var url = showingAfter ? imgEl.getAttribute('data-after') : imgEl.getAttribute('data-before');
+        imgEl.style.backgroundImage = "url('" + url + "')";
+        if (labelEl) labelEl.textContent = showingAfter ? 'Show Before' : 'Show After';
+      });
+    });
+
+    // Category filter pills
+    var filterPills = document.querySelectorAll('[data-filter]');
+    var emptyMsg = document.querySelector('[data-ba-empty]');
+    filterPills.forEach(function (pill) {
+      pill.addEventListener('click', function () {
+        var filter = pill.getAttribute('data-filter');
+        filterPills.forEach(function (p) { p.classList.remove('active'); });
+        pill.classList.add('active');
+        var visibleCount = 0;
+        baCards.forEach(function (card) {
+          var cats = (card.getAttribute('data-cats') || '').split(',');
+          var show = filter === 'All' || cats.indexOf(filter) !== -1;
+          card.style.display = show ? '' : 'none';
+          if (show) { card.classList.add('in'); visibleCount++; }
+        });
+        if (emptyMsg) emptyMsg.style.display = visibleCount === 0 ? 'block' : 'none';
+      });
+    });
+  }
+
 });

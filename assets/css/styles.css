@@ -669,6 +669,9 @@ footer { background: var(--black); color: var(--white); }
 .filter-pill.active { background: var(--orange); color: var(--black); border-color: var(--orange); }
 .filter-pill:hover:not(.active) { border-color: var(--orange); color: var(--orange); }
 
+/* Project gallery card hover lift (before-and-afters page) */
+.project-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0, 191, 255, 0.28); }
+
 /* Modal */
 .modal-backdrop {
   position: fixed;
