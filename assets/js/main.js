@@ -95,7 +95,8 @@ document.addEventListener('DOMContentLoaded', function () {
   var brochureFormView = document.getElementById('brochureFormView');
   var brochureSuccessView = document.getElementById('brochureSuccessView');
 
-  function openBrochure() {
+  function openBrochure(e) {
+    if (e && e.preventDefault) e.preventDefault();
     brochureBackdrop.style.display = 'flex';
   }
   function closeBrochure() {
@@ -130,6 +131,36 @@ document.addEventListener('DOMContentLoaded', function () {
       brochureFormView.style.display = 'none';
       brochureSuccessView.style.display = 'block';
     });
+  }
+
+  /* ---------- Contact form ---------- */
+  var contactForm = document.getElementById('contactForm');
+  if (contactForm) {
+    var contactFormView = document.getElementById('contactFormView');
+    var contactSuccessView = document.getElementById('contactSuccessView');
+    var contactSuccessName = document.getElementById('contactSuccessName');
+    var contactResetBtn = document.getElementById('contactResetBtn');
+
+    contactForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      /* TODO: replace with a real submit to /api/contact (Vercel function)
+         once the contact-form backend is wired up (Stage 5). For now this
+         only shows the success state client-side. */
+      var nameField = contactForm.elements['name'];
+      var first = ((nameField && nameField.value) || '').trim().split(' ')[0] || 'there';
+      if (contactSuccessName) contactSuccessName.textContent = first;
+      contactFormView.style.display = 'none';
+      contactSuccessView.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    if (contactResetBtn) {
+      contactResetBtn.addEventListener('click', function () {
+        contactForm.reset();
+        contactSuccessView.style.display = 'none';
+        contactFormView.style.display = 'block';
+      });
+    }
   }
 
   /* ---------- Accordions (FAQ etc.) ---------- */
