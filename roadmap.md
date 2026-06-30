@@ -44,15 +44,15 @@ Matches the nav structure already designed (`chrome.jsx`). Flat URLs, no subfold
 | File | Nav label | Status |
 |---|---|---|
 | `index.html` | HOME | ✅ built |
-| `conservatory-roofing.html` | ROOFING | not started |
-| `conservatory-conversion.html` | CONVERSIONS | not started |
-| `before-and-afters.html` | BEFORE & AFTERS | not started |
-| `finance.html` | FINANCE | not started |
-| `faq.html` | FAQ | not started |
-| `about.html` | ABOUT | not started |
-| `contact.html` | CONTACT | not started |
-| `roof-options.html` | (linked from homepage cards, not in main nav) | not started |
-| `how-it-works.html` | (CTA button in the homepage's "Built With Bespoke Insulated Roof Systems" section, not in main nav) | not started |
+| `conservatory-roofing.html` | ROOFING | ✅ built |
+| `conservatory-conversion.html` | CONVERSIONS | ✅ built |
+| `before-and-afters.html` | BEFORE & AFTERS | ✅ built |
+| `finance.html` | FINANCE | ✅ built |
+| `faq.html` | FAQ | ✅ built |
+| `about.html` | ABOUT | ✅ built |
+| `contact.html` | CONTACT | ✅ built |
+| `roof-options.html` | (linked from homepage cards, not in main nav) | ✅ built |
+| `how-it-works.html` | (CTA button in the homepage's "Built With Bespoke Insulated Roof Systems" section, not in main nav) | ✅ built |
 
 Each of these has a matching `page-*.jsx` file in the original Claude Design project (e.g. `page-faq.jsx`) containing the approved copy and layout - export these from the design project and hand them to Claude Code one at a time, following the exact conversion pattern already used for `index.html` (React/JSX → static HTML, `map()` loops manually unrolled into HTML, `Reveal` components → `.reveal` divs with `data-delay`, inline SVGs kept as-is).
 
@@ -76,6 +76,18 @@ Decided after testing - see notes below the table.
 - Benchmark: ~65–70KB at 960px wide is a good, healthy result. Don't chase smaller - going much below ~40–50KB at that resolution risks visible artefacts on sky, glazing and brick textures.
 - All `.HEIC` files **must** be converted regardless of size - HEIC isn't supported in Chrome, Firefox or Edge.
 - **Note on `before-1.webp` / `after-1.webp`:** the generic 1800–2000px hero/slider spec above assumed a large, full-width treatment. The approved design's before/after slider is actually a compact ~475–500px-wide component, not full-bleed - at that size, source images around 950–1000px wide are enough for a sharp retina render. These two files are likely already adequate as-is; confirm once the slider is built and rendering in a real browser, rather than re-exporting pre-emptively.
+- **Note on inline content placeholders (added during Stage 3):** while converting `conservatory-conversion.html`, `roof-options.html` and `how-it-works.html`, the design's `PicsumImg` calls (external random-image placeholders) were replaced with local `.img-placeholder` divs pointing at fixed intended paths, all flat under `assets/`, all sized to the inline content images tier (max 1000–1200px):
+  - `conservatory-conversion.html`: `conversion-benefit.webp`, `conversion-strength.webp`
+  - `roof-options.html` (one per roof system, looped): `roof-01.webp`, `roof-02.webp`, `roof-03.webp`, `roof-04.webp`
+  - `how-it-works.html` (one per step, looped): `step-01.webp` through `step-05.webp`
+
+  These 11 filenames are already baked into the markup - see the matching Stage 4 note below.
+- **Note on the before/after gallery images (added during Stage 3):** the `before-and-afters.html` project gallery uses 10 more local images, at the **Gallery grid thumbnails tier (700–800px)** - sequential, flat under `assets/`, matching the existing `before-1`/`after-1` convention:
+  - `before-2.webp` through `before-6.webp`
+  - `after-2.webp` through `after-6.webp`
+
+  (`before-1.webp` / `after-1.webp` already exist and are reused for project 1.) These render as cover-fit cards with a before/after toggle and never open a larger lightbox, so the thumbnail tier is correct - the 1800–2000px detail tier would be wasted bytes. Like the inline placeholders, the paths are baked into the markup, so Stage 4 is a straight export-and-drop-in.
+- **Note on the contact-page map (added during Stage 3):** the "Map — 19 Arthur Street, Belfast" block on `contact.html` is a styled placeholder (diagonal-stripe panel), **not a live map**. It needs a real embed (e.g. a Google Maps iframe or a static map image) before go-live - **flagged for Stage 8 (final pre-launch review)**, or sooner if a real map is wanted during the build.
 
 ---
 
@@ -179,6 +191,8 @@ in which tier if it's not obvious from the filename.
 ```
 
 **Check before assuming work's needed:** `before-1.webp` and `after-1.webp` were initially flagged as undersized against the generic 1800-2000px hero spec, but the approved design's before/after slider actually renders far smaller than that (~475-500px wide) - these files are likely already fine. Confirm the rendered size once the slider's built before spending time re-exporting them. See the note under "Reference: image specs" above.
+
+**Drop-in replacement, not a rename:** the 11 inline content images on `conservatory-conversion.html`, `roof-options.html` and `how-it-works.html` already have fixed paths baked into the markup via `.img-placeholder` (see "Reference: image specs" above for the full filename list). For these specific files, Stage 4 is a straight export-and-drop-in once the real photos are sourced - no markup or path changes needed, since the naming and the inline-content size tier (max 1000-1200px) are already decided.
 
 ---
 
