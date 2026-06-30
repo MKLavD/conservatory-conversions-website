@@ -196,6 +196,16 @@ input:focus-visible,
 .card-orange-top { border-top: 3px solid var(--orange); }
 .card-orange-left { border-left: 3px solid var(--orange); }
 
+/* Large brand step numeral (how-it-works, roof-options; used as a faint
+   absolute watermark with inline overrides on the conservatory-roofing page) */
+.step-num {
+  font-family: 'iBrand', 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 64px;
+  line-height: 1;
+  color: var(--orange);
+}
+
 /* Trust pill */
 .trust-pill {
   display: inline-flex;
