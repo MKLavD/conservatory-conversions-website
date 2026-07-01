@@ -32,6 +32,13 @@ function read(file) {
   return fs.readFileSync(file, 'utf8');
 }
 
+// Per-page extra <head> markup, keyed by page filename. Injected at {{HEAD_EXTRA}}.
+const HEAD_EXTRA = {
+  'index.html':
+    '<link rel="preload" as="image" href="/assets/mainslider3-mobile.webp" media="(max-width: 768px)" fetchpriority="high">\n' +
+    '<link rel="preload" as="image" href="/assets/mainslider3.webp" media="(min-width: 769px)" fetchpriority="high">',
+};
+
 // Parse the leading <!-- key: value --> metadata block; return { meta, body }.
 function parsePage(raw) {
   const meta = {};
@@ -76,6 +83,11 @@ function build() {
 
     let headFilled = inject(head, '{{TITLE}}', meta.title || 'Conservatory Conversions');
     headFilled = inject(headFilled, '{{DESCRIPTION}}', meta.description || '');
+    // Per-page <head> extras. The homepage hero uses a photographic background;
+    // preload it (responsive, high priority) so it isn't discovered late by the
+    // CSS parser — the LCP fix. Media attributes match the CSS breakpoint so only
+    // the version that will actually be used is fetched.
+    headFilled = inject(headFilled, '{{HEAD_EXTRA}}', HEAD_EXTRA[pageFile] || '');
 
     const headerFilled = setActiveNav(header, pageFile);
 

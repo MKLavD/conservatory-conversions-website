@@ -48,6 +48,9 @@ const jobs = [
   // Hero shots (landscape 1200x675) — used as hero background / imagery.
   { in: 'scraped/mainslider2.png', out: 'mainslider2.webp', max: 1200, q: 80 },
   { in: 'scraped/mainslider3.png', out: 'mainslider3.webp', max: 1200, q: 80 },
+  // Mobile hero background — smaller/lighter; sits behind a dark overlay so a
+  // lower quality is imperceptible. Served via CSS media query + preload.
+  { in: 'scraped/mainslider3.png', out: 'mainslider3-mobile.webp', max: 768, q: 70 },
   // Matched before/after pair from one job — replaces the old before-1/after-1.
   { in: 'scraped/before.png',      out: 'before-1.webp',    max: 1200, q: 80 },
   { in: 'scraped/after.png',       out: 'after-1.webp',     max: 1200, q: 80 },

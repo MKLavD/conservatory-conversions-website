@@ -605,6 +605,15 @@ footer { background: var(--black); color: var(--white); }
     url('../mainslider3.webp') center / cover no-repeat,
     var(--black);
 }
+/* Mobile: serve the lighter 768px hero background (matches the preload media). */
+@media (max-width: 768px) {
+  .hero-home {
+    background:
+      linear-gradient(rgba(10, 14, 26, 0.82), rgba(10, 14, 26, 0.9)),
+      url('../mainslider3-mobile.webp') center / cover no-repeat,
+      var(--black);
+  }
+}
 .hero-grid { display: grid; grid-template-columns: 3fr 2fr; gap: 56px; align-items: center; }
 @media (max-width: 1024px) { .hero-grid { grid-template-columns: 1fr; } }
 
