@@ -1,8 +1,16 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-  /* ---------- Footer year ---------- */
+  /* ---------- Footer year (immediate — trivial, no layout read) ---------- */
   var yearEl = document.getElementById('footerYear');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  /* Everything below is deferred until AFTER the first paint so it never blocks
+     the LCP (hero image) paint. A double requestAnimationFrame runs once the
+     browser has painted the first frame; none of this is needed before then. */
+  function runAfterPaint(fn) {
+    requestAnimationFrame(function () { requestAnimationFrame(fn); });
+  }
+  runAfterPaint(function () {
 
   /* ---------- Navbar scrolled state ---------- */
   var navbar = document.getElementById('navbar');
@@ -53,11 +61,16 @@ document.addEventListener('DOMContentLoaded', function () {
     var baHandle = document.getElementById('baHandle');
     var baImgBefore = baSlider.querySelector('.img-before');
     var dragging = false;
+    var baRect = null;   // cached geometry: read once per gesture, never mid-move
+    var rafId = null;
+    var pendingX = 0;
 
-    function updateFromX(clientX) {
-      var rect = baSlider.getBoundingClientRect();
-      var x = clientX - rect.left;
-      var pct = Math.max(0, Math.min(100, (x / rect.width) * 100));
+    // Writes only, batched into one rAF — we never read layout after a write,
+    // so continuous dragging no longer triggers a synchronous forced reflow.
+    function paintClip() {
+      rafId = null;
+      var x = pendingX - baRect.left;
+      var pct = Math.max(0, Math.min(100, (x / baRect.width) * 100));
       var clip = 100 - pct;
       baSlider.style.setProperty('--clip', clip + '%');
       baImgBefore.style.clipPath = 'inset(0 ' + clip + '% 0 0)';
@@ -66,13 +79,19 @@ document.addEventListener('DOMContentLoaded', function () {
       baHandle.style.left = pos;
     }
 
+    function updateFromX(clientX) {
+      pendingX = clientX;
+      if (rafId === null) rafId = requestAnimationFrame(paintClip);
+    }
+
     function start(e) {
       dragging = true;
+      baRect = baSlider.getBoundingClientRect();  // single geometry read, before any writes
       var clientX = e.touches ? e.touches[0].clientX : e.clientX;
       updateFromX(clientX);
     }
     function move(e) {
-      if (!dragging) return;
+      if (!dragging || !baRect) return;
       var clientX = e.touches ? e.touches[0].clientX : e.clientX;
       updateFromX(clientX);
     }
@@ -295,5 +314,7 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     });
   }
+
+  }); // end deferred init (runAfterPaint)
 
 });
