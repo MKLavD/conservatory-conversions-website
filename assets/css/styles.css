@@ -7,7 +7,7 @@
   src: url('../fonts/Ibrand.woff2') format('woff2'),
        url('../fonts/Ibrand.woff') format('woff'),
        url('../fonts/Ibrand.ttf') format('truetype');
-  font-weight: 100 900;
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
@@ -58,6 +58,7 @@ body {
 }
 h1, h2, h3, h4, h5, h6 {
   font-family: 'iBrand Display', 'Outfit', sans-serif;
+  font-synthesis: none; /* iBrand is single-weight — use the real file, no faux-bold */
   font-weight: 800;
   letter-spacing: -0.005em;
   line-height: 1.05;
