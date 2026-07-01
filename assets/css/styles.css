@@ -554,6 +554,11 @@ footer { background: var(--black); color: var(--white); }
 }
 .accreditations-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
 @media (max-width: 880px) { .accreditations-row { grid-template-columns: repeat(3, 1fr); } }
+
+/* About page "Where We Work" — fixed 2 rows of 4 on desktop, responsive below */
+.coverage-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+@media (max-width: 900px) { .coverage-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .coverage-grid { grid-template-columns: 1fr; } }
 .badge-tile {
   display: flex;
   align-items: center;
