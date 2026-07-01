@@ -113,11 +113,24 @@ input:focus-visible,
   color: var(--black);
   border-color: var(--orange);
   box-shadow: var(--glow-cyan-sm);
+  animation: btnGlowPulse 2.6s ease-in-out infinite;
 }
 .btn-orange:hover {
   background: var(--cyan-bright);
   border-color: var(--cyan-bright);
   box-shadow: var(--glow-cyan-lg);
+  animation: none; /* stop the resting pulse so the hover glow applies cleanly */
+}
+/* Resting-state gentle pulse: eases between the reduced glow and no glow.
+   Hover cancels the animation (above); the transition on .btn smooths the
+   handoff to the brighter hover glow. Both keyframes use matching 2-layer
+   shadows so box-shadow interpolates cleanly. */
+@keyframes btnGlowPulse {
+  0%, 100% { box-shadow: var(--glow-cyan-sm); }
+  50%      { box-shadow: 0 0 0 rgba(0, 191, 255, 0), 0 0 0 rgba(184, 240, 255, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn-orange { animation: none; }
 }
 .btn-outline-white {
   background: transparent;
