@@ -237,9 +237,25 @@ internal links. Recommend the simplest option.
 
 ---
 
-## Stage 8 - Final deploy & go-live review
+## Stage 8 - Final deploy & go-live review ✅ done
 
 **Goal:** GitHub and Vercel were already connected back in Stage 2, so by this point every page should already be auto-deploying to the live Vercel URL as it's built. This stage is the final pre-launch pass: confirm the live deployment matches what was tested locally in Stage 7, double-check the build is picking up the optimised images and the live contact form, and fix anything that only shows up in production.
+
+**Review outcome (all checks against the live Vercel URL):**
+
+- All 10 pages return 200 with correct titles.
+- All internal page links resolve, including the 4 roof-options anchor links → their `id` targets.
+- 20 optimised `.webp` images load correctly; core assets (styles.css, main.js, Ibrand.woff2, all 6 accreditation logos) serve with correct content-types.
+- Contact form **and** brochure form confirmed sending on production (`POST /api/contact` and `/api/brochure` both returned `{"ok":true}` 200). The serverless functions only run on Vercel (or `vercel dev`), so this was the first true end-to-end test of the forms — they work.
+- No production-only regressions found.
+
+**Known gaps at launch (accepted, tracked to post-launch):**
+
+- **step-01 … step-05 images** on `how-it-works.html` 404 (no source photos yet) and render as plain grey `.img-placeholder` boxes. Left as-is by decision — real photos drop straight into the existing paths post-launch, no markup change. Also tracked under Stage 10.
+
+**⚠️ TODO — confirm SMS shortcode with client (before or shortly after launch):**
+
+`contact.html` has a CTA `href="sms:60075?body=QUOTE"` labelled "Or text QUOTE to 60075". The number `60075` does not relate to the business phone (`02890 098705`) and may be placeholder copy. Awaiting client confirmation — it will then either be updated to a real, provisioned SMS shortcode or removed entirely. Handled as a separate small task.
 
 **Starter prompt:**
 
