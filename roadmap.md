@@ -169,9 +169,15 @@ kept as-is). Use the shared partials from Stage 1 for the header/footer.
 
 ---
 
-## Stage 4 - Image pipeline
+## Stage 4 - Image pipeline ✅ done (with caveats below)
 
 **Goal:** batch-convert all HEIC/JPG photos to optimised WebP using the specs above.
+
+**Status:** 16 source photos converted to WebP via `scripts/convert-images.js` (Node + sharp, installed locally with `--no-save` so it never touches the Vercel build; sources staged in the gitignored `_stage4-src/`, only the optimised `assets/*.webp` outputs are committed). Gallery tier max 800px, inline max 1200px, quality 75 baseline with q70 on the detail-dense outliers; `roof-01..04` additionally trimmed to max 1000px to lighten the roof-options page (~773KB → ~557KB combined). Every output was visually inspected - no artefacts on glazing, brick or sky. The heaviest files are detail-bound (foliage, gravel, brick, tile granules), not quality-bound, confirmed by how little further compression achieved. Now live with real photos: `before-and-afters.html`, `conservatory-conversion.html`, `roof-options.html`.
+
+**Caveats / still outstanding:**
+- **`step-01.webp` through `step-05.webp`** (the five `how-it-works.html` step images) remain as `.img-placeholder` divs - no source photos supplied yet. Names/paths are already baked into the markup, so it's a straight drop-in: add the five mappings to `scripts/convert-images.js` and re-run once the photos arrive.
+- **`before-1.webp` / `after-1.webp`** (homepage hero slider) were left untouched this run and still await **visual in-browser confirmation** that they're sharp enough at the slider's real rendered size (~475-500px wide) - see the slider note under "Reference: image specs" above. Re-export only if they actually look soft.
 
 **Starter prompt:**
 
