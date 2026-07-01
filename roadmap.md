@@ -19,20 +19,33 @@ website/
 ├── package.json            ✅ built - "build": node build.js · "dev": node build.js --watch
 ├── .gitignore               excludes public/, node_modules, .DS_Store
 ├── partials/
-│   ├── head.html           ✅ built - <head> contents, {{TITLE}} / {{DESCRIPTION}} tokens
+│   ├── head.html           ✅ built - <head> contents, {{TITLE}} / {{DESCRIPTION}} tokens + iBrand preload link
 │   ├── header.html         ✅ built - phone bar + navbar + mobile overlay
 │   └── footer.html         ✅ built - brochure modal + footer + mobile CTA + <script>
 ├── src/
 │   └── pages/
 │       └── index.html      ✅ built - real editable source for the homepage
 ├── public/                  generated output - this is what Vercel serves
+├── scripts/
+│   └── convert-images.js   ✅ built - Node + sharp image pipeline, local dev only, never runs on Vercel
 └── assets/
-    ├── before-1.webp       ✅ real photo added (960×619, 64KB - likely fine for the compact slider, see Stage 4 note)
-    ├── after-1.webp        ✅ real photo added (960×566, 71KB - likely fine for the compact slider, see Stage 4 note)
+    ├── before-1.webp       ✅ real photo added (960×619, 64KB)
+    ├── after-1.webp        ✅ real photo added (960×566, 71KB)
     ├── css/
     │   └── styles.css      ✅ built
-    └── js/
-        └── main.js         ✅ built
+    ├── js/
+    │   └── main.js         ✅ built
+    ├── fonts/
+    │   ├── Ibrand.woff2    ✅ added - primary format, preloaded in head.html
+    │   ├── Ibrand.woff     ✅ added - fallback
+    │   └── Ibrand.ttf      ✅ added - last-resort fallback
+    └── logos/
+        ├── fensa.png       ✅ added - white-keyed transparent PNG
+        ├── fmb.png         ✅ added - white-keyed transparent PNG
+        ├── checkatrade.png ✅ added - white-keyed transparent PNG
+        ├── fsb.webp        ✅ added - transparent background
+        ├── trustpilot.webp ✅ added - transparent background
+        └── which.png       ✅ added - transparent background
 ```
 
 ---
@@ -54,10 +67,6 @@ Matches the nav structure already designed (`chrome.jsx`). Flat URLs, no subfold
 | `roof-options.html` | (linked from homepage cards, not in main nav) | ✅ built |
 | `how-it-works.html` | (CTA button in the homepage's "Built With Bespoke Insulated Roof Systems" section, not in main nav) | ✅ built |
 
-Each of these has a matching `page-*.jsx` file in the original Claude Design project (e.g. `page-faq.jsx`) containing the approved copy and layout - export these from the design project and hand them to Claude Code one at a time, following the exact conversion pattern already used for `index.html` (React/JSX → static HTML, `map()` loops manually unrolled into HTML, `Reveal` components → `.reveal` divs with `data-delay`, inline SVGs kept as-is).
-
-**Note - anchor links needed:** ✅ **done.** The four `roof-options.html` system sections now carry anchor IDs (`#solid-tiled-roof`, `#hybrid-roof-system`, `#internal-insulation`, `#full-conservatory-conversion`), and the homepage's four "Our Systems" "Learn More" links point to the matching anchors. The "COMPARE ALL OPTIONS" button correctly stays a plain link to the page top.
-
 ---
 
 ## Reference: image specs
@@ -66,28 +75,22 @@ Decided after testing - see notes below the table.
 
 | Use on site | Max width |
 |---|---|
-| Hero / before-after slider | 1800–2000px |
-| Gallery detail / lightbox | 1800–2000px |
-| Gallery grid thumbnails | 700–800px |
-| Inline content images | 1000–1200px |
+| Hero / before-after slider | 1800-2000px |
+| Gallery detail / lightbox | 1800-2000px |
+| Gallery grid thumbnails | 700-800px |
+| Inline content images | 1000-1200px |
 
 - Convert everything to WebP. Quality setting: **80%**.
 - Resize *before* exporting to WebP - resizing does more for file size than fine-tuning quality.
-- Benchmark: ~65–70KB at 960px wide is a good, healthy result. Don't chase smaller - going much below ~40–50KB at that resolution risks visible artefacts on sky, glazing and brick textures.
+- Benchmark: ~65-70KB at 960px wide is a good, healthy result. Don't chase smaller - going much below ~40-50KB at that resolution risks visible artefacts on sky, glazing and brick textures.
 - All `.HEIC` files **must** be converted regardless of size - HEIC isn't supported in Chrome, Firefox or Edge.
-- **Note on `before-1.webp` / `after-1.webp`:** the generic 1800–2000px hero/slider spec above assumed a large, full-width treatment. The approved design's before/after slider is actually a compact ~475–500px-wide component, not full-bleed - at that size, source images around 950–1000px wide are enough for a sharp retina render. These two files are likely already adequate as-is; confirm once the slider is built and rendering in a real browser, rather than re-exporting pre-emptively.
-- **Note on inline content placeholders (added during Stage 3):** while converting `conservatory-conversion.html`, `roof-options.html` and `how-it-works.html`, the design's `PicsumImg` calls (external random-image placeholders) were replaced with local `.img-placeholder` divs pointing at fixed intended paths, all flat under `assets/`, all sized to the inline content images tier (max 1000–1200px):
+- **Note on `before-1.webp` / `after-1.webp`:** the generic 1800-2000px hero/slider spec above assumed a large, full-width treatment. The approved design's before/after slider is actually a compact ~475-500px-wide component, not full-bleed - at that size, source images around 950-1000px wide are enough for a sharp retina render. These two files are confirmed adequate as-is.
+- **Note on inline content placeholders (added during Stage 3):** while converting `conservatory-conversion.html`, `roof-options.html` and `how-it-works.html`, the design's `PicsumImg` calls (external random-image placeholders) were replaced with local `.img-placeholder` divs pointing at fixed intended paths, all flat under `assets/`, all sized to the inline content images tier (max 1000-1200px):
   - `conservatory-conversion.html`: `conversion-benefit.webp`, `conversion-strength.webp`
   - `roof-options.html` (one per roof system, looped): `roof-01.webp`, `roof-02.webp`, `roof-03.webp`, `roof-04.webp`
   - `how-it-works.html` (one per step, looped): `step-01.webp` through `step-05.webp`
 
-  These 11 filenames are already baked into the markup - see the matching Stage 4 note below.
-- **Note on the before/after gallery images (added during Stage 3):** the `before-and-afters.html` project gallery uses 10 more local images, at the **Gallery grid thumbnails tier (700–800px)** - sequential, flat under `assets/`, matching the existing `before-1`/`after-1` convention:
-  - `before-2.webp` through `before-6.webp`
-  - `after-2.webp` through `after-6.webp`
-
-  (`before-1.webp` / `after-1.webp` already exist and are reused for project 1.) These render as cover-fit cards with a before/after toggle and never open a larger lightbox, so the thumbnail tier is correct - the 1800–2000px detail tier would be wasted bytes. Like the inline placeholders, the paths are baked into the markup, so Stage 4 is a straight export-and-drop-in.
-- **Note on the contact-page map (added during Stage 3):** the "Map — 19 Arthur Street, Belfast" block on `contact.html` is a styled placeholder (diagonal-stripe panel), **not a live map**. It needs a real embed (e.g. a Google Maps iframe or a static map image) before go-live - **flagged for Stage 8 (final pre-launch review)**, or sooner if a real map is wanted during the build.
+  These 11 filenames are already baked into the markup. `step-01` through `step-05` remain as `.img-placeholder` divs - no source photos yet.
 
 ---
 
@@ -113,110 +116,94 @@ Decided after testing - see notes below the table.
 - [x] `build.js` itself verified (not just its logic): Node installed locally, real build run and diffed clean against the working Python stand-in Claude Code used while Node was unavailable
 - [x] Old root `index.html` retired - renamed to `index.html.reference`, banner-marked as dead/reference-only
 
-**Starter prompt:**
+---
 
-```
-I'm building a 10-page static HTML/CSS/JS site (no framework). index.html is
-already built and working - open it and use it as the reference for the
-design system and shared components (navbar, top phone bar, mobile overlay,
-footer).
+## Stage 2 - Connect GitHub & Vercel ✅ done
 
-I want to avoid duplicating that header/footer markup across 10 separate
-files. Propose a lightweight approach: a partials/ folder with the shared
-chunks, and a short Node build script (no dependencies beyond what's needed)
-that stitches partials into page-specific content and outputs finished
-static HTML into a public/ folder. Show me the plan before writing any code.
-```
+- [x] GitHub repo created: MKLavD/conservatory-conversions-website (private)
+- [x] Vercel connected, auto-deploy on push to `main` confirmed
+- [x] `vercel.json` uses `buildCommand: node build.js` and `outputDirectory: public`
+- [x] Live Vercel URL: https://conservatory-conversions-website.vercel.app
 
 ---
 
-## Stage 2 - Connect GitHub & Vercel (early)
+## Stage 3 - Build the remaining pages ✅ done
 
-**Goal:** rather than waiting until the whole site is built, connect the GitHub repo and Vercel project straight after Stage 1, so every page built from here on can be checked on a live Vercel URL as soon as it's pushed - the same commit → deploy → live URL workflow used on previous projects. This means setting up `vercel.json` with the correct `buildCommand` and `outputDirectory` now, matching the Stage 1 build script's output (`public/`), rather than leaving it until the end of the project.
+All 10 pages built and live. All internal links resolve.
 
-**Starter prompt:**
-
-```
-Now that the partials/build-script approach from Stage 1 is working locally,
-help me get this project into a GitHub repo and connected to Vercel for
-auto-deployment, this early in the build rather than at the end. Set up
-vercel.json with the correct buildCommand and outputDirectory so Vercel runs
-the build script and serves the public/ output. Walk me through each step,
-including anything I need to do in the GitHub and Vercel web interfaces
-myself. Once this is done I should be able to push any change and see it
-live on the Vercel URL.
-```
+- [x] All pages converted from `page-*.jsx` to static HTML following the established pattern
+- [x] `roof-options.html` anchor links added; homepage "Our Systems" cards updated to link to `#solid-tiled-roof`, `#hybrid-roof-system`, `#internal-insulation`, `#full-conservatory-conversion`
+- [x] "SEE HOW IT WORKS" CTA button added to homepage Technology section, linking to `how-it-works.html`
 
 ---
 
-## Stage 3 - Build the remaining pages
+## Stage 4 - Image pipeline ✅ done
 
-**Goal:** convert each `page-*.jsx` file into a static HTML page, one at a time, following the same pattern as `index.html`.
+- [x] `scripts/convert-images.js` built (Node + sharp) - local dev only, never runs on Vercel
+- [x] 16 photos converted and live
+- [x] `_stage4-src/` holds raw originals (gitignored)
+- [x] `step-01` through `step-05` remain as `.img-placeholder` divs - no source photos yet. When they arrive, add 5 mappings to `scripts/convert-images.js` and re-run. Paths already baked into `how-it-works.html` markup - zero markup rework needed.
 
-**Starter prompt** (repeat per page, swapping in the relevant file):
+**Check before assuming work's needed:** `before-1.webp` and `after-1.webp` are confirmed adequate for the compact slider component - no re-export needed.
 
-```
-Here's page-faq.jsx from the original design project [paste content]. Convert
-it into a static HTML page the same way index.html was converted from
-page-home.jsx - same design system, same component patterns (Reveal →
-.reveal + data-delay, map() loops unrolled into real HTML, inline SVG icons
-kept as-is). Use the shared partials from Stage 1 for the header/footer.
-```
-
-**Reminder for `roof-options.html` specifically:** ✅ **done** (commit 708022e). Each roof-type section has its own anchor ID and the four homepage "Learn More" links point to the matching anchor.
-
-**Reminder for `how-it-works.html` specifically:** ✅ **done** (commit 9bfda8c). A left-aligned solid-orange "See How It Works" CTA now sits under the closing paragraph of the homepage's "Built with bespoke insulated roof systems" section, linking to this page (its primary entry point, since it isn't in the main nav).
+**Drop-in replacement, not a rename:** the 11 inline content images on `conservatory-conversion.html`, `roof-options.html` and `how-it-works.html` already have fixed paths baked into the markup. Stage 4 is a straight export-and-drop-in once the real photos are sourced.
 
 ---
 
-## Stage 4 - Image pipeline ✅ done (with caveats below)
+## Stage 4.5 - Design polish ✅ done
 
-**Goal:** batch-convert all HEIC/JPG photos to optimised WebP using the specs above.
+Post-build design improvements made before Stage 5. All live.
 
-**Status:** 16 source photos converted to WebP via `scripts/convert-images.js` (Node + sharp, installed locally with `--no-save` so it never touches the Vercel build; sources staged in the gitignored `_stage4-src/`, only the optimised `assets/*.webp` outputs are committed). Gallery tier max 800px, inline max 1200px, quality 75 baseline with q70 on the detail-dense outliers; `roof-01..04` additionally trimmed to max 1000px to lighten the roof-options page (~773KB → ~557KB combined). Every output was visually inspected - no artefacts on glazing, brick or sky. The heaviest files are detail-bound (foliage, gravel, brick, tile granules), not quality-bound, confirmed by how little further compression achieved. Now live with real photos: `before-and-afters.html`, `conservatory-conversion.html`, `roof-options.html`.
-
-**Caveats / still outstanding:**
-- **`step-01.webp` through `step-05.webp`** (the five `how-it-works.html` step images) remain as `.img-placeholder` divs - no source photos supplied yet. Names/paths are already baked into the markup, so it's a straight drop-in: add the five mappings to `scripts/convert-images.js` and re-run once the photos arrive.
-- **`before-1.webp` / `after-1.webp`** (homepage hero slider) were left untouched this run and still await **visual in-browser confirmation** that they're sharp enough at the slider's real rendered size (~475-500px wide) - see the slider note under "Reference: image specs" above. Re-export only if they actually look soft.
-
-**Starter prompt:**
-
-```
-I have a folder of HEIC and JPG photos that need converting to WebP. Specs:
-
-- Hero / gallery detail images: resize to max 2000px on the longest edge
-- Gallery thumbnails: resize to max 800px
-- Inline content images: resize to max 1200px
-- Export all as WebP, quality 80
-- Target roughly 65-70KB for a 960px-wide image as a sanity check
-
-Write a script (Node + sharp, or another tool you'd recommend) that batch
-processes everything in [folder path] and outputs the results to a separate
-folder, sorted by which size tier each one needs. Ask me which photos belong
-in which tier if it's not obvious from the filename.
-```
-
-**Check before assuming work's needed:** `before-1.webp` and `after-1.webp` were initially flagged as undersized against the generic 1800-2000px hero spec, but the approved design's before/after slider actually renders far smaller than that (~475-500px wide) - these files are likely already fine. Confirm the rendered size once the slider's built before spending time re-exporting them. See the note under "Reference: image specs" above.
-
-**Drop-in replacement, not a rename:** the 11 inline content images on `conservatory-conversion.html`, `roof-options.html` and `how-it-works.html` already have fixed paths baked into the markup via `.img-placeholder` (see "Reference: image specs" above for the full filename list). For these specific files, Stage 4 is a straight export-and-drop-in once the real photos are sourced - no markup or path changes needed, since the naming and the inline-content size tier (max 1000-1200px) are already decided.
+- [x] Stats cards grid - balanced to clean 3x2 layout, equal height cards
+- [x] CTA button glow - non-hover glow intensity reduced and set to gentle pulse animation (keyframe, ~2-3s cycle, ease-in-out)
+- [x] CTA button variants - three context-aware variants implemented:
+  - Dark sections: cyan fill, white text, cyan glow + pulse
+  - Light/white sections: navy fill, white text (cyan on hover), cyan glow + pulse
+  - Cyan sections: navy fill, cyan text (white on hover), white glow + pulse
+- [x] Homepage hero - column split changed from 50/50 to 60/40 (copy/image)
+- [x] Homepage hero - trust badges moved from below CTAs (left column) to below slider (right column); Trustpilot 4.9/5 rating added to right column
+- [x] Homepage hero - trust badges changed from pill style to plain inline text with icons, all on one line
+- [x] Homepage hero - vertical alignment set to centre; slider height capped at `max-height: 340px` so left column defines the row height
+- [x] Homepage hero - "Our Systems" cards made fully clickable (whole card, not just "Learn More" text)
+- [x] Capitalisation sweep - section headings, card titles, accordion questions (FAQ + finance), finance step-card titles changed from all-caps to title case via CSS. Nav, buttons, eyebrows, badges, labels kept all-caps.
+- [x] Global container max-width changed from 1280px to 1440px
+- [x] Contact page - USP box hover animation removed (purely informational components)
+- [x] Contact page - "Or download our brochure first" link removed from below form submit button
+- [x] Contact page - submit button label changed from "Send My Free Quote Request" to "Get My Free Quote"
+- [x] Contact page - Google Maps embed added (19 Arthur Street, Belfast), responsive via CSS
+- [x] iBrand font - self-hosted via `@font-face`, applied to h1-h6 headings only. Single weight (400), `font-synthesis: none` prevents faux-bold. woff2 preloaded in `head.html`.
+- [x] Stat card `.num` elements switched to iBrand font
+- [x] Footer logo alignment fixed; social icon circle centering fixed
+- [x] Accreditation bar - text-only labels replaced with real logo images (FENSA, Checkatrade, FMB, FSB, Trustpilot, Which?). All rendered white via `filter: brightness(0) invert(1)`. FENSA, FMB and Checkatrade white-keyed locally by Claude Code from supplied source files. Individual logo heights tuned for visual balance.
 
 ---
 
-## Stage 5 - Contact form backend
+## Stage 5 - Contact form backend ✅ done
 
 **Goal:** replace the current client-side-only "fake success" brochure form (see the `TODO` comment in `main.js`) and wire up the real contact form with an actual backend, since there's no CMS or third-party form plugin doing this for us.
 
-**Decision needed first:** Vercel serverless function + a transactional email service (e.g. Resend), or a drop-in third-party form service (e.g. Formspree, Web3Forms). The former is fully yours and unbranded; the latter is faster to set up.
+**Decision made:** Vercel serverless function + Resend. Chosen for full ownership and no third-party branding.
 
-**Starter prompt:**
+**What was built:**
 
-```
-I need to wire up the contact form and the brochure-download modal form to
-actually send submissions somewhere - right now main.js just fakes a
-success state client-side (see the TODO comment). I want to use [Vercel
-serverless function + Resend / Formspree / Web3Forms - pick one]. Walk me
-through the setup and write the necessary code.
-```
+- `api/contact.js` — `POST /api/contact`; validates name/phone/postcode/email (required) plus style/roof/message, emails the submission, sets `reply_to` to the enquirer.
+- `api/brochure.js` — `POST /api/brochure`; validates name/email/postcode, emails the lead.
+- `lib/mail.js` — shared Resend HTTP helper using the runtime's built-in `fetch` (no SDK dependency). HTML-escapes all user input; trims `RESEND_API_KEY` before building the `Authorization` header.
+- `assets/js/main.js` — the two fake-success blocks now do real `fetch` POSTs with a "Sending…" loading state, unchanged success UX, and an inline error message on failure.
+- `.gitignore` — added `.env*` and `.vercel/` so a local key can never be committed.
+
+Vercel auto-detects the root `/api` directory as serverless functions independently of the static build (`buildCommand: node build.js`, `outputDirectory: public`), so no config change was needed. Only internal notification emails are sent — no customer autoresponder yet (can be added later if wanted).
+
+**⚠️ TODO before/at go-live — swap the temporary email addresses:**
+
+Currently sending **from** `onboarding@resend.dev` (Resend's shared sandbox sender, no domain verification needed) **to** `dan@laventusdigital.co.uk`. These are interim defaults baked into `lib/mail.js`.
+
+Once the GoDaddy DNS for `conservatoryconversions.co.uk` is added and **verified in Resend**, switch both addresses to `sales@conservatoryconversions.co.uk`. This is done purely by setting two **Vercel environment variables** — **no code change needed**:
+
+- `MAIL_FROM` = `Conservatory Conversions <sales@conservatoryconversions.co.uk>`
+- `MAIL_TO` = `sales@conservatoryconversions.co.uk`
+
+Note: while on the sandbox sender, Resend only delivers to the Resend account's own email — verifying the domain lifts that restriction.
 
 ---
 
@@ -275,4 +262,13 @@ Once the new site is live on a Vercel preview URL and approved, the existing dom
 
 ## Stage 10 - Post-launch design & content optimisation (later, not yet planned in detail)
 
-The current design is the client-approved baseline for getting the site live, not necessarily the final word. Once the core 10 pages are built and launched, expect a follow-up pass to revisit specific elements - e.g. the before/after slider's size and treatment (flagged during the homepage build as worth reconsidering, see "Reference: image specs" above). Not yet scoped - revisit once Stage 8 is done.
+The current design is the client-approved baseline for getting the site live, not necessarily the final word. Once the core 10 pages are built and launched, expect a follow-up pass to revisit specific elements.
+
+**Already identified:**
+
+- Hero section background image - currently text-only, no background photo
+- Before/after slider size and treatment - flagged during homepage build as worth reconsidering
+- step-01 through step-05 images - no source photos yet, placeholders in markup
+- Mixed title case vs sentence case in heading copy (low priority)
+- Cyan triangle graphic top-right may look disconnected at 1440px
+- Accreditation bar logos - if better source files become available for FENSA, FMB or Checkatrade (proper reversed/white-on-transparent versions), replace the current white-keyed PNGs generated by Claude Code
