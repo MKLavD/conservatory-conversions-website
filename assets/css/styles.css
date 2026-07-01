@@ -194,7 +194,7 @@ input:focus-visible,
 }
 .btn-black:hover {
   background: var(--black);
-  color: var(--orange);
+  color: var(--white);
   border-color: var(--black);
   box-shadow: var(--glow-white-lg);
   animation: none; /* stop the resting pulse so the hover glow applies cleanly */
