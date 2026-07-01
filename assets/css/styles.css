@@ -132,6 +132,36 @@ input:focus-visible,
 @media (prefers-reduced-motion: reduce) {
   .btn-orange { animation: none; }
 }
+/* Light-background sections: give the cyan glow a dark surface to bloom
+   against. Only fill + text differ from the dark-section version — navy fill,
+   cyan text. The glow (box-shadow) and resting pulse are inherited from
+   .btn-orange unchanged. Hover keeps the navy surface (overriding the base
+   :hover cyan-bright fill) so the brighter glow still blooms on white. */
+.bg-white .btn-orange,
+.bg-offwhite .btn-orange {
+  background: var(--black);
+  color: var(--orange);
+  border-color: var(--black);
+}
+.bg-white .btn-orange:hover,
+.bg-offwhite .btn-orange:hover {
+  background: var(--black);
+  color: var(--orange);
+  border-color: var(--black);
+}
+/* Exception: a .btn-orange sitting on a dark card inside a light section
+   already has a dark surface — keep the cyan-fill version. Declared after the
+   rules above so it wins at equal specificity. */
+.card-dark .btn-orange {
+  background: var(--orange);
+  color: var(--black);
+  border-color: var(--orange);
+}
+.card-dark .btn-orange:hover {
+  background: var(--cyan-bright);
+  color: var(--black);
+  border-color: var(--cyan-bright);
+}
 .btn-outline-white {
   background: transparent;
   color: var(--white);
