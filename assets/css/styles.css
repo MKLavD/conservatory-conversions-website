@@ -105,7 +105,7 @@ input:focus-visible,
   font-weight: 700;
   font-size: 15px;
   letter-spacing: 0.02em;
-  transition: all 0.2s ease;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
   cursor: pointer;
   text-transform: uppercase;
   font-family: 'iBrand', 'Outfit', sans-serif;
@@ -198,6 +198,16 @@ input:focus-visible,
   border-color: var(--black);
   box-shadow: var(--glow-white-lg);
   animation: none; /* stop the resting pulse so the hover glow applies cleanly */
+}
+/* Perceptual sync (navy variants only): the resting pulse can be near its
+   peak when hover triggers, so box-shadow has less distance to travel than
+   the text colour. Delay box-shadow ~0.05s on hover so the text-colour change
+   leads very slightly and both land together. Timing only — no colour/glow
+   change. Applies to the light-section and cyan-section navy buttons. */
+.bg-white .btn-orange:hover,
+.bg-offwhite .btn-orange:hover,
+.btn-black:hover {
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease 0.05s;
 }
 
 /* Section utilities */
