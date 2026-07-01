@@ -543,8 +543,9 @@ footer { background: var(--black); color: var(--white); }
   font-family: 'iBrand', 'Outfit', sans-serif;
   font-weight: 700;
 }
-.footer-col a:not(.nav-logo) { display: block; color: #b3b3b3; padding: 6px 0; font-size: 14px; transition: color 0.2s ease; }
+.footer-col a { display: block; color: #b3b3b3; padding: 6px 0; font-size: 14px; transition: color 0.2s ease; }
 .footer-col a:hover { color: var(--orange); }
+.footer-col a.nav-logo { display: flex; align-items: center; padding: 0; }
 .accreditations-strip {
   background: var(--black-2);
   border-top: 1px solid var(--border-dark);
