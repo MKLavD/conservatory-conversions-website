@@ -150,7 +150,7 @@ input:focus-visible,
 .bg-white .btn-orange,
 .bg-offwhite .btn-orange {
   background: var(--black);
-  color: var(--orange);
+  color: var(--white);
   border-color: var(--black);
 }
 .bg-white .btn-orange:hover,
