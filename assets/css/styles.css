@@ -199,15 +199,15 @@ input:focus-visible,
   box-shadow: var(--glow-white-lg);
   animation: none; /* stop the resting pulse so the hover glow applies cleanly */
 }
-/* Perceptual sync (navy variants only): text colour and glow both start on
-   hover, but box-shadow gets a longer 0.3s duration (vs the text's 0.2s) with
-   no delay, so the glow builds more gradually and finishes just after the
-   text — making the text feel like it leads the glow. Timing only — no
-   colour/glow change. Applies to the light-section and cyan-section navy buttons. */
+/* Perceptual sync (navy variants only): text colour leads the glow. Colour
+   transitions over 0.2s with a small -0.05s negative delay so it appears to
+   start slightly ahead, while box-shadow builds more gradually over a longer
+   0.3s duration (no delay). Timing only — no colour/glow change. Applies to
+   the light-section and cyan-section navy buttons. */
 .bg-white .btn-orange:hover,
 .bg-offwhite .btn-orange:hover,
 .btn-black:hover {
-  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.3s ease;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease -0.05s, box-shadow 0.3s ease;
 }
 
 /* Section utilities */
