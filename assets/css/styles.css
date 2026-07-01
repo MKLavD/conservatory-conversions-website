@@ -112,7 +112,7 @@ input:focus-visible,
   background: var(--orange);
   color: var(--black);
   border-color: var(--orange);
-  box-shadow: var(--glow-cyan-md);
+  box-shadow: var(--glow-cyan-sm);
 }
 .btn-orange:hover {
   background: var(--cyan-bright);
@@ -594,12 +594,16 @@ footer { background: var(--black); color: var(--white); }
 }
 
 /* Stat card */
+.stats-grid { display: grid; gap: 16px; grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 900px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .stats-grid { grid-template-columns: 1fr; } }
 .stat-card {
   background: var(--card-dark);
   border-top: 3px solid var(--orange);
   border-radius: var(--radius-card);
   padding: 32px 24px;
   text-align: left;
+  height: 100%;
 }
 .stat-card .num {
   font-family: 'iBrand', 'Outfit', sans-serif;
