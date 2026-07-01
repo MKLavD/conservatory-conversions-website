@@ -55,6 +55,10 @@
   --glow-cyan-sm: 0 0 14px rgba(0, 191, 255, 0.7), 0 0 4px rgba(184, 240, 255, 0.5);
   --glow-cyan-md: 0 0 28px rgba(0, 191, 255, 0.85), 0 0 8px rgba(184, 240, 255, 0.7), 0 0 2px rgba(255, 255, 255, 0.4);
   --glow-cyan-lg: 0 0 48px rgba(0, 191, 255, 0.95), 0 0 16px rgba(77, 217, 255, 0.85), 0 0 4px rgba(255, 255, 255, 0.5);
+  /* White glow — same blur/spread/alpha as the cyan glow, colour swapped to
+     white, for CTAs on cyan backgrounds where the cyan glow is invisible. */
+  --glow-white-sm: 0 0 14px rgba(255, 255, 255, 0.7), 0 0 4px rgba(255, 255, 255, 0.5);
+  --glow-white-lg: 0 0 48px rgba(255, 255, 255, 0.95), 0 0 16px rgba(255, 255, 255, 0.85), 0 0 4px rgba(255, 255, 255, 0.5);
   --glow-text-sm: 0 0 6px rgba(0, 191, 255, 0.7), 0 0 12px rgba(0, 191, 255, 0.45);
   --glow-text-md: 0 0 8px rgba(0, 191, 255, 0.85), 0 0 18px rgba(0, 191, 255, 0.55), 0 0 2px rgba(184, 240, 255, 0.9);
   --glow-text-lg: 0 0 12px rgba(0, 191, 255, 1), 0 0 28px rgba(0, 191, 255, 0.65), 0 0 4px rgba(184, 240, 255, 1);
@@ -129,8 +133,14 @@ input:focus-visible,
   0%, 100% { box-shadow: var(--glow-cyan-sm); }
   50%      { box-shadow: 0 0 0 rgba(0, 191, 255, 0), 0 0 0 rgba(184, 240, 255, 0); }
 }
+/* White-glow pulse for CTAs on cyan backgrounds — identical timing to
+   btnGlowPulse, white glow instead of cyan. */
+@keyframes btnGlowPulseWhite {
+  0%, 100% { box-shadow: var(--glow-white-sm); }
+  50%      { box-shadow: 0 0 0 rgba(255, 255, 255, 0), 0 0 0 rgba(255, 255, 255, 0); }
+}
 @media (prefers-reduced-motion: reduce) {
-  .btn-orange { animation: none; }
+  .btn-orange, .btn-black { animation: none; }
 }
 /* Light-background sections: give the cyan glow a dark surface to bloom
    against. Only fill + text differ from the dark-section version — navy fill,
@@ -171,12 +181,24 @@ input:focus-visible,
   background: var(--white);
   color: var(--black);
 }
+/* CTA variant for cyan-background contexts (bg-orange banners + the dual-CTA
+   cyan "Download Free Brochure" card). Navy fill + cyan text + WHITE glow so
+   the glow blooms against the cyan surface. Mirrors the .btn-orange treatment
+   (same pulse timing, same sm/lg glow scale) with white in place of cyan. */
 .btn-black {
   background: var(--black);
-  color: var(--white);
+  color: var(--orange);
   border-color: var(--black);
+  box-shadow: var(--glow-white-sm);
+  animation: btnGlowPulseWhite 2.6s ease-in-out infinite;
 }
-.btn-black:hover { background: var(--card-dark-2); }
+.btn-black:hover {
+  background: var(--black);
+  color: var(--orange);
+  border-color: var(--black);
+  box-shadow: var(--glow-white-lg);
+  animation: none; /* stop the resting pulse so the hover glow applies cleanly */
+}
 
 /* Section utilities */
 .section { padding: 96px 0; }
