@@ -647,12 +647,13 @@ footer { background: var(--black); color: var(--white); }
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--border-dark);
   touch-action: pan-y;
 }
-/* Homepage hero only: a 5:4 slider that fills the right column substantially.
-   At 1440px the right column is ~528px wide → ~422px tall; at 1280px ~464px
-   wide → ~371px tall — sizeable without pushing the hero too tall on a laptop.
-   max-height is a safety cap (never bites below the 1440 container max).
-   Images crop via background-size:cover. */
-.hero .ba-slider { aspect-ratio: 5 / 4; max-height: 460px; }
+/* Homepage hero only: a 5:4 slider, capped so the RIGHT column stays shorter
+   than the LEFT copy column. That makes the left column define the grid row
+   height, so grid align-items:center vertically centres the whole right block
+   (slider + caption + badges + rating) against the headline. The 380px cap
+   trims the slider only slightly from its natural ~422px at 1440 while tipping
+   the balance. Images crop via background-size:cover. */
+.hero .ba-slider { aspect-ratio: 5 / 4; max-height: 380px; }
 .ba-slider .img { position: absolute; inset: 0; background-size: cover; background-position: center; }
 .ba-slider .img-after { z-index: 1; }
 .ba-slider .img-before { z-index: 2; clip-path: inset(0 var(--clip, 50%) 0 0); }
