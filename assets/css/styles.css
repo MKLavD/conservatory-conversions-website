@@ -1,31 +1,13 @@
-/* iBrand is the brand font; falls back to Outfit until the licensed
-   iBrand .woff2 files are dropped into /assets/fonts/. No code change
-   needed later — just add the files and these rules pick them up. */
+/* iBrand brand font. Registered under the 'iBrand Display' family so it is
+   applied only where we opt in (headings, via the h1–h6 rule). The many
+   non-heading elements that list 'iBrand' in their font stacks resolve to an
+   undefined family and keep falling back to Outfit, exactly as before. */
 @font-face {
-  font-family: 'iBrand';
-  src: local('iBrand'), url('../fonts/iBrand-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'iBrand';
-  src: local('iBrand Medium'), url('../fonts/iBrand-Medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'iBrand';
-  src: local('iBrand Bold'), url('../fonts/iBrand-Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'iBrand';
-  src: local('iBrand Black'), url('../fonts/iBrand-Black.woff2') format('woff2');
-  font-weight: 900;
+  font-family: 'iBrand Display';
+  src: url('../fonts/Ibrand.woff2') format('woff2'),
+       url('../fonts/Ibrand.woff') format('woff'),
+       url('../fonts/Ibrand.ttf') format('truetype');
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
@@ -75,7 +57,7 @@ body {
   overflow-x: hidden;
 }
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'iBrand', 'Outfit', sans-serif;
+  font-family: 'iBrand Display', 'Outfit', sans-serif;
   font-weight: 800;
   letter-spacing: -0.005em;
   line-height: 1.05;
