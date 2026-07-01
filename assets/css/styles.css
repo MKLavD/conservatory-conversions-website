@@ -207,7 +207,7 @@ input:focus-visible,
 .bg-white .btn-orange:hover,
 .bg-offwhite .btn-orange:hover,
 .btn-black:hover {
-  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease 0.05s;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease 0.1s;
 }
 
 /* Section utilities */
