@@ -160,22 +160,18 @@ input:focus-visible,
 .h-display {
   font-size: clamp(44px, 6vw, 84px);
   font-weight: 900;
-  text-transform: uppercase;
 }
 .h-1 {
   font-size: clamp(36px, 4.5vw, 60px);
   font-weight: 800;
-  text-transform: uppercase;
 }
 .h-2 {
   font-size: clamp(28px, 3.2vw, 42px);
   font-weight: 700;
-  text-transform: uppercase;
 }
 .h-3 {
   font-size: 22px;
   font-weight: 700;
-  text-transform: uppercase;
 }
 .body-lg { font-size: 18px; line-height: 1.65; }
 .body-md { font-size: 15px; line-height: 1.6; }
@@ -628,7 +624,6 @@ footer { background: var(--black); color: var(--white); }
   gap: 24px;
   font-family: 'iBrand', 'Outfit', sans-serif;
   font-weight: 700;
-  text-transform: uppercase;
   font-size: 20px;
   color: inherit;
   letter-spacing: 0.01em;
