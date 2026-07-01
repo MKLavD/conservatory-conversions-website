@@ -555,24 +555,16 @@ footer { background: var(--black); color: var(--white); }
 .accreditations-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
 @media (max-width: 880px) { .accreditations-row { grid-template-columns: repeat(3, 1fr); } }
 .badge-tile {
-  background: var(--card-dark);
-  border: 1px solid var(--border-dark);
-  border-radius: 6px;
-  padding: 16px 12px;
-  text-align: center;
-  font-family: 'iBrand', 'Outfit', sans-serif;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--white);
-  font-size: 14px;
-  letter-spacing: 0.04em;
-  line-height: 1.1;
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 64px;
 }
-.badge-tile span { color: var(--orange); display: block; font-size: 10px; letter-spacing: 0.12em; margin-bottom: 4px; }
+.accreditation-logo {
+  height: 40px;
+  width: auto;
+  filter: brightness(0) invert(1);
+}
 .footer-bottom { padding: 24px 0; border-top: 1px solid rgba(0, 191, 255, 0.3); color: var(--grey-text); font-size: 12px; line-height: 1.7; }
 
 .social-row { display: flex; gap: 10px; margin-top: 16px; }
