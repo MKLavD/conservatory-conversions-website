@@ -550,7 +550,7 @@ footer { background: var(--black); color: var(--white); }
   background: var(--black-2);
   border-top: 1px solid var(--border-dark);
   border-bottom: 1px solid var(--border-dark);
-  padding: 28px 0;
+  padding: 40px 0;
 }
 .accreditations-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
 @media (max-width: 880px) { .accreditations-row { grid-template-columns: repeat(3, 1fr); } }
@@ -568,7 +568,7 @@ footer { background: var(--black); color: var(--white); }
 }
 /* Per-logo heights tuned so each reads at equal visual weight (base = 40px = FMB) */
 .accreditation-logo[src$="fensa.png"] { height: 54px; }
-.accreditation-logo[src$="checkatrade.png"] { height: 46px; }
+.accreditation-logo[src$="checkatrade.png"] { height: 52px; }
 .accreditation-logo[src$="fsb.webp"] { height: 34px; }
 .accreditation-logo[src$="trustpilot.webp"] { height: 36px; }
 .accreditation-logo[src$="which.png"] { height: 84px; }
