@@ -56,7 +56,7 @@ Matches the nav structure already designed (`chrome.jsx`). Flat URLs, no subfold
 
 Each of these has a matching `page-*.jsx` file in the original Claude Design project (e.g. `page-faq.jsx`) containing the approved copy and layout - export these from the design project and hand them to Claude Code one at a time, following the exact conversion pattern already used for `index.html` (React/JSX → static HTML, `map()` loops manually unrolled into HTML, `Reveal` components → `.reveal` divs with `data-delay`, inline SVGs kept as-is).
 
-**Note - anchor links needed:** the homepage's "Our Systems" section has four cards (Solid Tiled Roof, Hybrid Roof System, Internal Insulation, Full Conversion), each with its own "Learn More" link. All four currently point to the top of `roof-options.html`. Once that page is built in Stage 3 - presumably with one section per roof type - each card's link needs updating to point to the matching anchor within the page (e.g. `roof-options.html#hybrid-roof-system`) rather than the page's top. The "COMPARE ALL OPTIONS" button below the cards correctly stays as a plain link to the top of the page, since it's meant to land on the whole comparison rather than one type.
+**Note - anchor links needed:** ✅ **done.** The four `roof-options.html` system sections now carry anchor IDs (`#solid-tiled-roof`, `#hybrid-roof-system`, `#internal-insulation`, `#full-conservatory-conversion`), and the homepage's four "Our Systems" "Learn More" links point to the matching anchors. The "COMPARE ALL OPTIONS" button correctly stays a plain link to the page top.
 
 ---
 
@@ -163,9 +163,9 @@ page-home.jsx - same design system, same component patterns (Reveal →
 kept as-is). Use the shared partials from Stage 1 for the header/footer.
 ```
 
-**Reminder for `roof-options.html` specifically:** give each roof-type section its own anchor ID, then go back and fix the four "Learn More" links on the homepage to point to the matching anchor (see the note under "Reference: page list" above), rather than leaving them all pointing at the page's top.
+**Reminder for `roof-options.html` specifically:** ✅ **done** (commit 708022e). Each roof-type section has its own anchor ID and the four homepage "Learn More" links point to the matching anchor.
 
-**Reminder for `how-it-works.html` specifically:** add a CTA button in the homepage's "Built With Bespoke Insulated Roof Systems" section (left-aligned, under the closing paragraph, styled consistently with the "COMPARE ALL OPTIONS" button) linking to this page - see the note in "Reference: page list" above.
+**Reminder for `how-it-works.html` specifically:** ✅ **done** (commit 9bfda8c). A left-aligned solid-orange "See How It Works" CTA now sits under the closing paragraph of the homepage's "Built with bespoke insulated roof systems" section, linking to this page (its primary entry point, since it isn't in the main nav).
 
 ---
 
