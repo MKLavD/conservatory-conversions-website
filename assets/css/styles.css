@@ -564,6 +564,7 @@ footer { background: var(--black); color: var(--white); }
   height: 40px;
   width: auto;
   filter: brightness(0) invert(1);
+  mix-blend-mode: screen;
 }
 .footer-bottom { padding: 24px 0; border-top: 1px solid rgba(0, 191, 255, 0.3); color: var(--grey-text); font-size: 12px; line-height: 1.7; }
 
