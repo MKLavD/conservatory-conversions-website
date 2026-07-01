@@ -4,6 +4,10 @@ public/
 # Design working material — JSX source from the approved design project, not deployed
 design-source/
 
+# Stage 4 raw source photos — inputs to the image pipeline; only the optimised
+# assets/*.webp outputs are committed, not these originals
+_stage4-src/
+
 # Dependencies (none yet, but in case any are added later)
 node_modules/
 
