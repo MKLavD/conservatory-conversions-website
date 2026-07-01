@@ -540,7 +540,7 @@ footer { background: var(--black); color: var(--white); }
 
 /* Hero specific */
 .hero { position: relative; background: var(--black); color: var(--white); overflow: hidden; padding: 80px 0 80px; }
-.hero-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: center; }
+.hero-grid { display: grid; grid-template-columns: 3fr 2fr; gap: 56px; align-items: center; }
 @media (max-width: 1024px) { .hero-grid { grid-template-columns: 1fr; } }
 
 /* Before/After slider */
