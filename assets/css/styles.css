@@ -619,6 +619,11 @@ footer { background: var(--black); color: var(--white); }
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--border-dark);
   touch-action: pan-y;
 }
+/* Homepage hero only: modest cap on the slider height so the left copy column
+   is the taller/defining one, letting the grid's align-items:center sit the
+   slider block at the vertical midpoint of the copy. Bites mainly at wide
+   widths (where the slider is tallest); images crop via background-size:cover. */
+.hero .ba-slider { max-height: 340px; }
 .ba-slider .img { position: absolute; inset: 0; background-size: cover; background-position: center; }
 .ba-slider .img-after { z-index: 1; }
 .ba-slider .img-before { z-index: 2; clip-path: inset(0 var(--clip, 50%) 0 0); }
