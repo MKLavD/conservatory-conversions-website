@@ -677,7 +677,7 @@ footer { background: var(--black); color: var(--white); }
   height: 100%;
 }
 .stat-card .num {
-  font-family: 'iBrand', 'Outfit', sans-serif;
+  font-family: 'iBrand Display', 'Outfit', sans-serif;
   font-weight: 900;
   font-size: clamp(40px, 4vw, 56px);
   color: var(--orange);
