@@ -597,6 +597,14 @@ footer { background: var(--black); color: var(--white); }
 
 /* Hero specific */
 .hero { position: relative; background: var(--black); color: var(--white); overflow: hidden; padding: 80px 0 80px; }
+/* Homepage hero only: photographic background (red tiled roof / blue sky) behind
+   a strong dark overlay so the white copy and cyan accents stay readable. */
+.hero-home {
+  background:
+    linear-gradient(rgba(10, 14, 26, 0.82), rgba(10, 14, 26, 0.9)),
+    url('../mainslider3.webp') center / cover no-repeat,
+    var(--black);
+}
 .hero-grid { display: grid; grid-template-columns: 3fr 2fr; gap: 56px; align-items: center; }
 @media (max-width: 1024px) { .hero-grid { grid-template-columns: 1fr; } }
 
@@ -614,11 +622,12 @@ footer { background: var(--black); color: var(--white); }
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--border-dark);
   touch-action: pan-y;
 }
-/* Homepage hero only: modest cap on the slider height so the left copy column
-   is the taller/defining one, letting the grid's align-items:center sit the
-   slider block at the vertical midpoint of the copy. Bites mainly at wide
-   widths (where the slider is tallest); images crop via background-size:cover. */
-.hero .ba-slider { max-height: 340px; }
+/* Homepage hero only: a 5:4 slider that fills the right column substantially.
+   At 1440px the right column is ~528px wide → ~422px tall; at 1280px ~464px
+   wide → ~371px tall — sizeable without pushing the hero too tall on a laptop.
+   max-height is a safety cap (never bites below the 1440 container max).
+   Images crop via background-size:cover. */
+.hero .ba-slider { aspect-ratio: 5 / 4; max-height: 460px; }
 .ba-slider .img { position: absolute; inset: 0; background-size: cover; background-position: center; }
 .ba-slider .img-after { z-index: 1; }
 .ba-slider .img-before { z-index: 2; clip-path: inset(0 var(--clip, 50%) 0 0); }

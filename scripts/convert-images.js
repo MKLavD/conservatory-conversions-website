@@ -43,6 +43,19 @@ const jobs = [
   { in: 'Light/IMG_1661.webp',          out: 'roof-03.webp',             max: 1000, q: 70 },
   { in: 'Before & After/IMG_3520.webp', out: 'conversion-strength.webp', max: 1200, q: 70 },
   { in: 'Before & After/IMG_2486.jpg',  out: 'roof-04.webp',             max: 1000, q: 70 },
+
+  // --- New batch: hero + matched before/after pair + how-it-works steps ---
+  // Hero shots (landscape 1200x675) — used as hero background / imagery.
+  { in: 'scraped/mainslider2.png', out: 'mainslider2.webp', max: 1200, q: 80 },
+  { in: 'scraped/mainslider3.png', out: 'mainslider3.webp', max: 1200, q: 80 },
+  // Matched before/after pair from one job — replaces the old before-1/after-1.
+  { in: 'scraped/before.png',      out: 'before-1.webp',    max: 1200, q: 80 },
+  { in: 'scraped/after.png',       out: 'after-1.webp',     max: 1200, q: 80 },
+  // How-it-works step placeholders (portrait 479x584; step-05 source pending).
+  { in: 'scraped/1.png',           out: 'step-01.webp',     max: 800,  q: 80 },
+  { in: 'scraped/2.png',           out: 'step-02.webp',     max: 800,  q: 80 },
+  { in: 'scraped/3.png',           out: 'step-03.webp',     max: 800,  q: 80 },
+  { in: 'scraped/4.png',           out: 'step-04.webp',     max: 800,  q: 80 },
 ];
 
 (async () => {
