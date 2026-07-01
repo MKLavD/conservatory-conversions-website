@@ -266,6 +266,10 @@ input:focus-visible,
   transform: translateY(-4px);
   box-shadow: 0 12px 32px rgba(0, 191, 255, 0.22), 0 0 0 1px rgba(77, 217, 255, 0.25);
 }
+/* Opt-in modifier: disable the card-dark hover lift on purely informational
+   boxes (e.g. the contact page USP row). Resets hover to the resting state,
+   so it neither transforms nor changes shadow. Only affects .no-hover. */
+.card-dark.no-hover:hover { transform: none; box-shadow: 0 4px 24px rgba(0, 191, 255, 0.08); }
 .card-orange-top { border-top: 3px solid var(--orange); }
 .card-orange-left { border-left: 3px solid var(--orange); }
 
