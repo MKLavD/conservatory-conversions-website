@@ -11,6 +11,11 @@ _stage4-src/
 # Dependencies (none yet, but in case any are added later)
 node_modules/
 
+# Local environment / secrets — API keys live in the Vercel dashboard, never in git
+.env
+.env.*
+.vercel/
+
 # OS cruft
 .DS_Store
 **/.DS_Store

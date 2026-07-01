@@ -86,6 +86,63 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('touchend', end);
   }
 
+  /* ---------- Shared AJAX form submit (contact + brochure) ---------- */
+  function submitForm(opts) {
+    var form = opts.form;
+    var button = opts.button;
+
+    // Serialise named fields to a plain object.
+    var data = {};
+    Array.prototype.forEach.call(form.elements, function (el) {
+      if (el.name) data[el.name] = el.value;
+    });
+
+    hideFormError(form);
+    var originalHtml = button ? button.innerHTML : '';
+    if (button) { button.disabled = true; button.innerHTML = 'Sending…'; }
+
+    function restore() {
+      if (button) { button.disabled = false; button.innerHTML = originalHtml; }
+    }
+
+    fetch(opts.endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+      .then(function (res) {
+        return res.json().catch(function () { return {}; }).then(function (payload) {
+          if (!res.ok) throw new Error(payload.error || 'Something went wrong. Please try again.');
+          return payload;
+        });
+      })
+      .then(function () {
+        restore();
+        opts.onSuccess();
+      })
+      .catch(function (err) {
+        restore();
+        showFormError(form, (err && err.message) || 'Something went wrong. Please try again.');
+      });
+  }
+
+  function showFormError(form, msg) {
+    var errEl = form.querySelector('[data-form-error]');
+    if (!errEl) {
+      errEl = document.createElement('p');
+      errEl.setAttribute('data-form-error', '');
+      errEl.style.cssText = 'color:#c0392b;font-size:14px;margin-top:14px;text-align:center';
+      form.appendChild(errEl);
+    }
+    errEl.textContent = msg;
+    errEl.style.display = 'block';
+  }
+
+  function hideFormError(form) {
+    var errEl = form.querySelector('[data-form-error]');
+    if (errEl) errEl.style.display = 'none';
+  }
+
   /* ---------- Brochure modal ---------- */
   var brochureOpenBtn = document.getElementById('brochureOpenBtn');
   var brochureBackdrop = document.getElementById('brochureBackdrop');
@@ -123,13 +180,18 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   if (brochureForm) {
+    var brochureSubmitBtn = brochureForm.querySelector('button[type="submit"]');
     brochureForm.addEventListener('submit', function (e) {
       e.preventDefault();
-      /* TODO: replace with a real submit to /api/brochure (Vercel function)
-         once the contact-form backend is wired up. For now this only
-         shows the success state client-side. */
-      brochureFormView.style.display = 'none';
-      brochureSuccessView.style.display = 'block';
+      submitForm({
+        form: brochureForm,
+        button: brochureSubmitBtn,
+        endpoint: '/api/brochure',
+        onSuccess: function () {
+          brochureFormView.style.display = 'none';
+          brochureSuccessView.style.display = 'block';
+        }
+      });
     });
   }
 
@@ -141,17 +203,22 @@ document.addEventListener('DOMContentLoaded', function () {
     var contactSuccessName = document.getElementById('contactSuccessName');
     var contactResetBtn = document.getElementById('contactResetBtn');
 
+    var contactSubmitBtn = contactForm.querySelector('button[type="submit"]');
     contactForm.addEventListener('submit', function (e) {
       e.preventDefault();
-      /* TODO: replace with a real submit to /api/contact (Vercel function)
-         once the contact-form backend is wired up (Stage 5). For now this
-         only shows the success state client-side. */
       var nameField = contactForm.elements['name'];
       var first = ((nameField && nameField.value) || '').trim().split(' ')[0] || 'there';
-      if (contactSuccessName) contactSuccessName.textContent = first;
-      contactFormView.style.display = 'none';
-      contactSuccessView.style.display = 'block';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      submitForm({
+        form: contactForm,
+        button: contactSubmitBtn,
+        endpoint: '/api/contact',
+        onSuccess: function () {
+          if (contactSuccessName) contactSuccessName.textContent = first;
+          contactFormView.style.display = 'none';
+          contactSuccessView.style.display = 'block';
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      });
     });
 
     if (contactResetBtn) {
