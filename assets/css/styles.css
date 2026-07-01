@@ -567,9 +567,6 @@ footer { background: var(--black); color: var(--white); }
   mix-blend-mode: screen;
 }
 .accreditation-logo[src$="which.png"] { height: 80px; }
-.accreditation-logo[src$="fensa.png"] { filter: none; mix-blend-mode: normal; }
-.accreditation-logo[src$="fmb.png"],
-.accreditation-logo[src$="checkatrade.png"] { filter: none; mix-blend-mode: multiply; }
 .footer-bottom { padding: 24px 0; border-top: 1px solid rgba(0, 191, 255, 0.3); color: var(--grey-text); font-size: 12px; line-height: 1.7; }
 
 .social-row { display: flex; gap: 10px; margin-top: 16px; }
