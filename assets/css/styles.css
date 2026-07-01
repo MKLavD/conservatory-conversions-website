@@ -12,6 +12,16 @@
   font-display: swap;
 }
 
+/* Outfit — self-hosted (replaces the render-blocking Google Fonts request).
+   Variable font: one file covers the full 100–900 weight axis. */
+@font-face {
+  font-family: 'Outfit';
+  src: url('../fonts/outfit/outfit.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --orange: #00BFFF;
   --orange-dark: #0098D6;
@@ -599,21 +609,21 @@ footer { background: var(--black); color: var(--white); }
 .hero { position: relative; background: var(--black); color: var(--white); overflow: hidden; padding: 80px 0 80px; }
 /* Homepage hero only: photographic background (red tiled roof / blue sky) behind
    a strong dark overlay so the white copy and cyan accents stay readable. */
-.hero-home {
-  background:
-    linear-gradient(rgba(10, 14, 26, 0.82), rgba(10, 14, 26, 0.9)),
-    url('../mainslider3.webp') center / cover no-repeat,
-    var(--black);
+.hero-home { background: var(--black); }
+/* Hero background as an <img> (via <picture>) rather than a CSS background, so it
+   is discoverable/preloadable and can carry fetchpriority=high — the LCP fix.
+   The dark overlay moves to ::after; the cyan corner-accent sits above it. */
+.hero-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.hero-bg img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.hero-home::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(rgba(10, 14, 26, 0.82), rgba(10, 14, 26, 0.9));
+  pointer-events: none;
 }
-/* Mobile: serve the lighter 768px hero background (matches the preload media). */
-@media (max-width: 768px) {
-  .hero-home {
-    background:
-      linear-gradient(rgba(10, 14, 26, 0.82), rgba(10, 14, 26, 0.9)),
-      url('../mainslider3-mobile.webp') center / cover no-repeat,
-      var(--black);
-  }
-}
+.hero-home .corner-accent { z-index: 2; }
 .hero-grid { display: grid; grid-template-columns: 3fr 2fr; gap: 56px; align-items: center; }
 @media (max-width: 1024px) { .hero-grid { grid-template-columns: 1fr; } }
 

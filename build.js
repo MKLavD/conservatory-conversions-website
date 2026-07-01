@@ -32,6 +32,18 @@ function read(file) {
   return fs.readFileSync(file, 'utf8');
 }
 
+// Conservative CSS minifier: strip comments, collapse whitespace, and trim
+// spaces around structural tokens. Deliberately leaves value internals (e.g.
+// calc() operands, multi-keyword values) as single-spaced so nothing breaks.
+function minifyCss(css) {
+  return css
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/\s+/g, ' ')
+    .replace(/\s*([{}:;,>])\s*/g, '$1')
+    .replace(/;}/g, '}')
+    .trim();
+}
+
 // Per-page extra <head> markup, keyed by page filename. Injected at {{HEAD_EXTRA}}.
 const HEAD_EXTRA = {
   'index.html':
@@ -74,6 +86,13 @@ function build() {
   const header = read(path.join(PARTIALS_DIR, 'header.html'));
   const footer = read(path.join(PARTIALS_DIR, 'footer.html'));
 
+  // Inline the stylesheet (minified) so it isn't a render-blocking request.
+  // url(../…) paths are rewritten to absolute /assets/… so they still resolve
+  // once the CSS lives in the document head instead of /assets/css/.
+  let inlineCss = minifyCss(read(path.join(ASSETS_DIR, 'css', 'styles.css')));
+  inlineCss = inlineCss.replace(/url\((['"]?)\.\.\//g, 'url($1/assets/');
+  const styleTag = '<style>' + inlineCss + '</style>';
+
   fs.rmSync(OUT_DIR, { recursive: true, force: true });
   fs.mkdirSync(OUT_DIR, { recursive: true });
 
@@ -88,6 +107,7 @@ function build() {
     // CSS parser — the LCP fix. Media attributes match the CSS breakpoint so only
     // the version that will actually be used is fetched.
     headFilled = inject(headFilled, '{{HEAD_EXTRA}}', HEAD_EXTRA[pageFile] || '');
+    headFilled = inject(headFilled, '{{INLINE_CSS}}', styleTag);
 
     const headerFilled = setActiveNav(header, pageFile);
 
