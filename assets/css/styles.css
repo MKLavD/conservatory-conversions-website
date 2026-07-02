@@ -635,8 +635,8 @@ footer { background: var(--black); color: var(--white); }
    column, then flex-centres its own content (slider + caption + badges + rating)
    vertically — giving clear space above the slider and below the rating. This
    is more robust than relying on grid align-items to centre a shorter item. */
-.hero-media { display: flex; flex-direction: column; justify-content: center; }
-@media (max-width: 1024px) { .hero-grid { grid-template-columns: 1fr; } .hero-media { display: block; } }
+.hero-media { display: flex; flex-direction: column; justify-content: center; padding-top: 50px; }
+@media (max-width: 1024px) { .hero-grid { grid-template-columns: 1fr; } .hero-media { display: block; padding-top: 0; } }
 
 /* Before/After slider */
 .ba-slider {
