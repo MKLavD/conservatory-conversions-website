@@ -22,6 +22,30 @@
   font-display: swap;
 }
 
+/* Metric-matched fallback faces (Arial, or Liberation Sans on Linux — the two
+   are metric-compatible). size-adjust matches each brand font's average glyph
+   width so line-wrapping is identical before the web font loads, and the
+   ascent/descent/line-gap overrides match its vertical metrics. Placed right
+   after each brand font in the stacks below, this keeps font-display: swap
+   while eliminating the fallback→web-font reflow (font-driven CLS). Values
+   computed from the actual font files (see head/hhea/OS-2 metrics). */
+@font-face {
+  font-family: 'iBrand Fallback';
+  src: local('Arial'), local('Liberation Sans');
+  size-adjust: 93.11%;
+  ascent-override: 80.55%;
+  descent-override: 26.85%;
+  line-gap-override: 10.74%;
+}
+@font-face {
+  font-family: 'Outfit Fallback';
+  src: local('Arial'), local('Liberation Sans');
+  size-adjust: 103.23%;
+  ascent-override: 96.87%;
+  descent-override: 25.19%;
+  line-gap-override: 0%;
+}
+
 :root {
   --orange: #00BFFF;
   --orange-dark: #0098D6;
@@ -59,7 +83,7 @@
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; overflow-x: hidden; }
 body {
-  font-family: 'iBrand', 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'iBrand', 'Outfit', 'Outfit Fallback', -apple-system, BlinkMacSystemFont, sans-serif;
   color: var(--black);
   background: var(--white);
   line-height: 1.55;
@@ -67,7 +91,7 @@ body {
   overflow-x: hidden;
 }
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'iBrand Display', 'Outfit', sans-serif;
+  font-family: 'iBrand Display', 'iBrand Fallback', 'Outfit', sans-serif;
   font-synthesis: none; /* iBrand is single-weight — use the real file, no faux-bold */
   font-weight: 800;
   letter-spacing: -0.005em;
@@ -226,7 +250,7 @@ input:focus-visible,
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.18em;
-  font-family: 'iBrand', 'Outfit', sans-serif;
+  font-family: 'iBrand', 'Outfit', 'Outfit Fallback', sans-serif;
   margin-bottom: 16px;
   display: block;
 }
