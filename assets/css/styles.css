@@ -230,6 +230,7 @@ input:focus-visible,
 .h-display {
   font-size: clamp(44px, 6vw, 84px);
   font-weight: 900;
+  overflow-wrap: break-word;
 }
 .h-1 {
   font-size: clamp(36px, 4.5vw, 60px);
@@ -385,7 +386,7 @@ input:focus-visible,
 @media (max-width: 880px) {
   .section { padding: 64px 0; }
   .container { padding: 0 20px; }
-  .h-display { font-size: 44px; }
+  .h-display { font-size: clamp(28px, 8vw, 44px); }
   .h-1 { font-size: 36px; }
   .h-2 { font-size: 28px; }
   .corner-accent { width: 60vw; }
@@ -631,6 +632,9 @@ footer { background: var(--black); color: var(--white); }
 }
 /* Both columns are vertically centred against each other via align-items:center. */
 .hero-grid { display: grid; grid-template-columns: 3fr 2fr; gap: 56px; align-items: stretch; }
+/* Let grid items shrink below their content's min-content width so a long word
+   in the headline wraps/breaks instead of overflowing (grid defaults min-width:auto). */
+.hero-grid > * { min-width: 0; }
 /* Right (media) column fills the row height defined by the taller left copy
    column, then flex-centres its own content (slider + caption + badges + rating)
    vertically — giving clear space above the slider and below the rating. This
