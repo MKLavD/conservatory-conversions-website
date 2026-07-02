@@ -4,6 +4,28 @@ document.addEventListener('DOMContentLoaded', function () {
   var yearEl = document.getElementById('footerYear');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
+  /* ---------- Reveal on scroll (set up immediately, NOT deferred) ----------
+     Above-the-fold .reveal elements start at opacity:0. Deferring the observer
+     behind the rAF chain kept them invisible for seconds under CPU throttle,
+     which Speed Index counts as "not visually complete". Attaching the observer
+     now lets above-fold content fade in right after FCP. Observer setup does no
+     forced layout, so it stays LCP-safe. Delay is capped so nothing waits long. */
+  var revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window && revealEls.length) {
+    var revealObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          var delay = Math.min(parseInt(entry.target.getAttribute('data-delay') || '0', 10), 120);
+          setTimeout(function () { entry.target.classList.add('in'); }, delay);
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    revealEls.forEach(function (el) { revealObserver.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add('in'); });
+  }
+
   /* Everything below is deferred until AFTER the first paint so it never blocks
      the LCP (hero image) paint. A double requestAnimationFrame runs once the
      browser has painted the first frame; none of this is needed before then. */
@@ -35,23 +57,6 @@ document.addEventListener('DOMContentLoaded', function () {
     mobileOverlay.querySelectorAll('a').forEach(function (link) {
       link.addEventListener('click', closeMobileNav);
     });
-  }
-
-  /* ---------- Reveal on scroll ---------- */
-  var revealEls = document.querySelectorAll('.reveal');
-  if ('IntersectionObserver' in window && revealEls.length) {
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          var delay = parseInt(entry.target.getAttribute('data-delay') || '0', 10);
-          setTimeout(function () { entry.target.classList.add('in'); }, delay);
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1 });
-    revealEls.forEach(function (el) { observer.observe(el); });
-  } else {
-    revealEls.forEach(function (el) { el.classList.add('in'); });
   }
 
   /* ---------- Before / After slider ---------- */
