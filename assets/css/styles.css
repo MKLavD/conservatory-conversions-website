@@ -393,10 +393,8 @@ input:focus-visible,
   .h-1 { font-size: 36px; }
   .h-2 { font-size: 28px; }
   .corner-accent { width: 60vw; }
-  /* Tight hero + navbar on mobile so the hero copy and both CTAs fit above the
-     fold on a ~375px viewport. Small hero top padding closes the gap between the
-     navbar and the eyebrow. */
-  .hero { padding: 12px 0 32px; }
+  /* Tight navbar on mobile so the hero copy and both CTAs fit above the fold on a
+     ~375px viewport. Hero padding is set on the base rule (20px 0 80px). */
   .navbar-inner { padding: 8px 20px; }
   /* Let long button labels wrap instead of overflowing their container. */
   .btn { white-space: normal; }
@@ -433,9 +431,9 @@ input:focus-visible,
   background: var(--black-2);
   border-bottom: 1px solid rgba(0, 191, 255, 0.18);
   color: #cdd5e5;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
-  padding: 12px 0;
+  padding: 5px 0;
   letter-spacing: 0.02em;
 }
 .top-phone-bar .inner {
@@ -454,7 +452,6 @@ input:focus-visible,
 .top-phone-bar a { color: #cdd5e5; transition: color 0.18s ease; }
 .top-phone-bar a:hover { color: var(--orange); }
 @media (max-width: 720px) {
-  .top-phone-bar { font-size: 12px; }
   .top-phone-bar .inner { justify-content: center; padding: 0 16px; }
   .top-phone-bar .contact-item.email { display: none; }
 }
@@ -630,7 +627,7 @@ footer { background: var(--black); color: var(--white); }
 .social-row a:hover { background: var(--orange); color: var(--black); }
 
 /* Hero specific */
-.hero { position: relative; background: var(--black); color: var(--white); overflow: hidden; padding: 80px 0 80px; }
+.hero { position: relative; background: var(--black); color: var(--white); overflow: hidden; padding: 20px 0 80px; }
 /* Homepage hero only: photographic background (red tiled roof / blue sky) behind
    a strong dark overlay so the white copy and cyan accents stay readable. */
 .hero-home { background: var(--black); }
