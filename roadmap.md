@@ -251,11 +251,9 @@ internal links. Recommend the simplest option.
 
 **Known gaps at launch (accepted, tracked to post-launch):**
 
-- **step-01 … step-05 images** on `how-it-works.html` 404 (no source photos yet) and render as plain grey `.img-placeholder` boxes. Left as-is by decision — real photos drop straight into the existing paths post-launch, no markup change. Also tracked under Stage 10.
+- **step-01 … step-04 images** on `how-it-works.html` were later supplied and added (see Stage 8.5). **step-05** still has no source photo and renders as a plain grey `.img-placeholder` box — the real photo drops straight into the existing path when supplied, no markup change. Still tracked under Stage 10.
 
-**⚠️ TODO — confirm SMS shortcode with client (before or shortly after launch):**
-
-`contact.html` has a CTA `href="sms:60075?body=QUOTE"` labelled "Or text QUOTE to 60075". The number `60075` does not relate to the business phone (`02890 098705`) and may be placeholder copy. Awaiting client confirmation — it will then either be updated to a real, provisioned SMS shortcode or removed entirely. Handled as a separate small task.
+**✅ RESOLVED — SMS shortcode:** the "Or text QUOTE to 60075" CTA on `contact.html` was placeholder copy. The client confirmed they don't offer an SMS service, so the button was removed entirely (see Stage 8.5).
 
 **Starter prompt:**
 
@@ -267,6 +265,46 @@ and confirm the contact form actually sends submissions on production (not
 just locally). Flag anything that differs from what we tested in Stage 7's
 local server.
 ```
+
+---
+
+## Stage 8.5 - Post-launch refinements, new photography & mobile/perf polish ✅ done
+
+A batch of client-requested refinements, new photography, a full mobile-responsive pass and a performance-optimisation round, completed after the Stage 8 go-live review and before the Stage 9 domain cutover. Grouped by area:
+
+**New photography & imagery**
+
+- Homepage hero: added a photographic background (`mainslider3.webp` — red tiled roof / blue sky) behind a dark overlay for text readability, scoped to the homepage only via a `.hero-home` class.
+- Homepage before/after slider: replaced `before-1`/`after-1` with a matched pair from a single job (stronger transformation), and enlarged the slider (5:4, `max-height` capped so the left copy column defines the row height).
+- `how-it-works.html`: step-01 through step-04 photos supplied and added (step-05 still pending — see Stage 10).
+- `mainslider2.webp` also exported and available (not yet placed). All new images run through the Stage 4 pipeline (`scripts/convert-images.js`) → optimised WebP.
+
+**Performance optimisation (mobile Lighthouse ~83 → 97)**
+
+- Self-hosted the Outfit font (variable woff2, `font-display: swap`); removed the render-blocking Google Fonts request and the unused Barlow Condensed. **No third-party font CDN dependency remains** (performance + GDPR win).
+- Inlined + minified the critical CSS into `<head>` at build time; removed the render-blocking external stylesheet request.
+- Hero background converted from a CSS `background-image` to a `<picture>`/`<img>` with `fetchpriority="high"`, a responsive 768px mobile source, and a homepage-scoped `<link rel="preload">` — fixes the LCP.
+- Deferred `main.js` and moved slider/UI init to run after first paint (double-rAF); refactored the before/after slider to cache geometry and batch writes in `requestAnimationFrame` (eliminates the forced reflow).
+- Resized oversized accreditation logos (fsb 55 KB → 11 KB, trustpilot 28 KB → 8 KB).
+
+**Mobile responsive pass**
+
+- Fixed sitewide horizontal scroll: `overflow-x: hidden` baseline plus the root-cause fix converting every `minmax(Npx, 1fr)` grid to `minmax(min(Npx, 100%), 1fr)`; heading `overflow-wrap: break-word`; hero trust-badge row `flex-wrap`.
+- Accreditation logo aspect-ratio fix: `max-height` + `height: auto` so wide logos scale proportionally instead of squashing on narrow cells; explicit `width`/`height` attributes added for CLS.
+- Sticky mobile CTA bar: hidden on load, slides in only once the hero CTAs scroll out of view (IntersectionObserver on `.hero-actions`, guarded against the first-callback flash); fixed its viewport overflow.
+- Reduced navbar + hero top padding on mobile so the eyebrow, headline, subtext and both CTAs fit above the fold at 375px (mobile-scoped; desktop padding restored). Headline scales down via `clamp(28px, 8vw, 44px)`.
+- Fixed a CSS cascade bug where the mobile navbar/hero overrides were declared before their base rules and lost — moved them after so the navbar aligns with page content (20px horizontal).
+
+**Design / layout / content**
+
+- Removed the cyan corner-accent triangle from the homepage hero (clashed with the new photo background); hero columns vertically balanced.
+- Sitewide: replaced all em-dashes (—) with en-dashes (–).
+- `about.html`: swapped the Our Values / trust-logos treatment (Values → light background, trust logos → dark homepage-style logo images); "Where We Work" set to 2 rows of 4; Values section given an off-white background for separation.
+- `conservatory-conversion.html`: moved the "Talk to an Expert" dark banner to sit between the Benefits and Improve Your Space sections (restores the dark → light → dark rhythm).
+- `before-and-afters.html`: removed the year from gallery card labels (kept the location).
+- `contact.html`: removed the SMS "text QUOTE to 60075" button; moved the Google Map into the left column (between the contact details and the USP bar); removed the USP bar; updated the eyebrow "Visit, Call or Text" → "Visit or Call".
+- Homepage hero paragraph copy changed to white (`#ffffff`) for readability over the photo.
+- Navbar base vertical padding reduced (22px → 10px).
 
 ---
 
