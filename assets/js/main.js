@@ -65,12 +65,11 @@ document.addEventListener('DOMContentLoaded', function () {
     var rafId = null;
     var pendingX = 0;
 
-    // Writes only, batched into one rAF — we never read layout after a write,
-    // so continuous dragging no longer triggers a synchronous forced reflow.
-    function paintClip() {
-      rafId = null;
-      var x = pendingX - baRect.left;
-      var pct = Math.max(0, Math.min(100, (x / baRect.width) * 100));
+    var nudgeCancelled = false;   // any user interaction cancels the intro nudge
+    var nudgePlayed = false;
+
+    // Set the slider position directly (0 = fully left, 100 = fully right).
+    function applyPct(pct) {
       var clip = 100 - pct;
       baSlider.style.setProperty('--clip', clip + '%');
       baImgBefore.style.clipPath = 'inset(0 ' + clip + '% 0 0)';
@@ -79,12 +78,22 @@ document.addEventListener('DOMContentLoaded', function () {
       baHandle.style.left = pos;
     }
 
+    // Writes only, batched into one rAF — we never read layout after a write,
+    // so continuous dragging no longer triggers a synchronous forced reflow.
+    function paintClip() {
+      rafId = null;
+      var x = pendingX - baRect.left;
+      var pct = Math.max(0, Math.min(100, (x / baRect.width) * 100));
+      applyPct(pct);
+    }
+
     function updateFromX(clientX) {
       pendingX = clientX;
       if (rafId === null) rafId = requestAnimationFrame(paintClip);
     }
 
     function start(e) {
+      nudgeCancelled = true;   // user took over — stop the intro nudge
       dragging = true;
       baRect = baSlider.getBoundingClientRect();  // single geometry read, before any writes
       var clientX = e.touches ? e.touches[0].clientX : e.clientX;
@@ -103,6 +112,42 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('touchmove', move, { passive: true });
     window.addEventListener('mouseup', end);
     window.addEventListener('touchend', end);
+
+    /* One-time intro nudge: after full page load + 700ms, sweep the slider
+       fully right → fully left → back to centre (~1s per leg, ease-in-out).
+       Triggered on window 'load' so it runs well after LCP/first paint, plays
+       once, and cancels instantly if the user interacts (start() flags it). */
+    function easeInOutCubic(t) {
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+    function animatePct(from, to, duration, done) {
+      var startTs = null;
+      function frame(ts) {
+        if (nudgeCancelled) return;                 // stop silently if interrupted
+        if (startTs === null) startTs = ts;
+        var t = Math.min(1, (ts - startTs) / duration);
+        applyPct(from + (to - from) * easeInOutCubic(t));
+        if (t < 1) requestAnimationFrame(frame);
+        else if (done) done();
+      }
+      requestAnimationFrame(frame);
+    }
+    function playNudge() {
+      if (nudgePlayed || nudgeCancelled) return;
+      nudgePlayed = true;
+      // Respect users who prefer reduced motion — skip the animation entirely.
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      setTimeout(function () {
+        if (nudgeCancelled) return;
+        animatePct(50, 100, 1000, function () {
+          animatePct(100, 0, 1000, function () {
+            animatePct(0, 50, 1000);
+          });
+        });
+      }, 700);
+    }
+    if (document.readyState === 'complete') playNudge();
+    else window.addEventListener('load', playNudge, { once: true });
   }
 
   /* ---------- Mobile sticky CTA: reveal once the hero CTAs scroll away ---------- */
