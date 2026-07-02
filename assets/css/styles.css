@@ -105,6 +105,7 @@ input:focus-visible,
   text-transform: uppercase;
   font-family: 'iBrand', 'Outfit', sans-serif;
   border: 2px solid transparent;
+  max-width: 100%;
   white-space: nowrap;
 }
 .btn-orange {
@@ -392,6 +393,12 @@ input:focus-visible,
   .h-1 { font-size: 36px; }
   .h-2 { font-size: 28px; }
   .corner-accent { width: 60vw; }
+  /* Tighter hero + navbar on mobile so the hero copy and both CTAs fit above the
+     fold on a ~375px viewport. */
+  .hero { padding: 28px 0 40px; }
+  .navbar-inner { padding: 14px 20px; }
+  /* Let long button labels wrap instead of overflowing their container. */
+  .btn { white-space: normal; }
 }
 
 /* Mobile bottom bar */

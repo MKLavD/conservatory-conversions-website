@@ -105,15 +105,16 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('touchend', end);
   }
 
-  /* ---------- Mobile sticky CTA: reveal only after the hero scrolls away ---------- */
+  /* ---------- Mobile sticky CTA: reveal once the hero CTAs scroll away ---------- */
   var mobileCta = document.querySelector('.mobile-cta-bar');
-  var heroSection = document.querySelector('.hero');
-  if (mobileCta && heroSection && 'IntersectionObserver' in window) {
+  // Prefer the hero CTA buttons as the trigger (bar appears the moment they leave
+  // the viewport); fall back to the whole hero on pages without that button row.
+  var ctaTrigger = document.querySelector('.hero-actions') || document.querySelector('.hero');
+  if (mobileCta && ctaTrigger && 'IntersectionObserver' in window) {
     var ctaObserver = new IntersectionObserver(function (entries) {
-      // Hero visible → keep bar hidden (hero CTAs are on screen). Hero gone → show bar.
       mobileCta.classList.toggle('visible', !entries[0].isIntersecting);
     }, { threshold: 0 });
-    ctaObserver.observe(heroSection);
+    ctaObserver.observe(ctaTrigger);
   } else if (mobileCta) {
     mobileCta.classList.add('visible'); // no IO support: just show it
   }
