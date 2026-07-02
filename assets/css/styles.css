@@ -393,8 +393,9 @@ input:focus-visible,
   .h-1 { font-size: 36px; }
   .h-2 { font-size: 28px; }
   .corner-accent { width: 60vw; }
-  /* Tight navbar on mobile so the hero copy and both CTAs fit above the fold on a
-     ~375px viewport. Hero padding is set on the base rule (20px 0 80px). */
+  /* Tight hero + navbar on mobile so the hero copy and both CTAs fit above the
+     fold on a ~375px viewport (desktop keeps the roomier 80px top padding). */
+  .hero { padding: 20px 0 80px; }
   .navbar-inner { padding: 8px 20px; }
   /* Let long button labels wrap instead of overflowing their container. */
   .btn { white-space: normal; }
@@ -627,7 +628,7 @@ footer { background: var(--black); color: var(--white); }
 .social-row a:hover { background: var(--orange); color: var(--black); }
 
 /* Hero specific */
-.hero { position: relative; background: var(--black); color: var(--white); overflow: hidden; padding: 20px 0 80px; }
+.hero { position: relative; background: var(--black); color: var(--white); overflow: hidden; padding: 80px 0 80px; }
 /* Homepage hero only: photographic background (red tiled roof / blue sky) behind
    a strong dark overlay so the white copy and cyan accents stay readable. */
 .hero-home { background: var(--black); }
