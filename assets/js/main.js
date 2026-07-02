@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       requestAnimationFrame(frame);
     }
-    function playNudge() {
+    function playNudge(delay) {
       if (nudgePlayed || nudgeCancelled) return;
       nudgePlayed = true;
       // Respect users who prefer reduced motion — skip the animation entirely.
@@ -144,10 +144,26 @@ document.addEventListener('DOMContentLoaded', function () {
             animatePct(0, 50, 1000);
           });
         });
-      }, 700);
+      }, delay);
     }
-    if (document.readyState === 'complete') playNudge();
-    else window.addEventListener('load', playNudge, { once: true });
+
+    // On stacked (mobile) layouts the slider sits below the hero and is off-screen
+    // at load, so trigger the nudge when it first scrolls into view instead. On
+    // desktop (slider visible in the hero on load) keep the page-load trigger.
+    var stacked = window.matchMedia && window.matchMedia('(max-width: 1024px)').matches;
+    if (stacked && 'IntersectionObserver' in window) {
+      var nudgeObserver = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) {
+          nudgeObserver.disconnect();
+          playNudge(300);   // brief settle once it's comfortably in view
+        }
+      }, { threshold: 0.4 });
+      nudgeObserver.observe(baSlider);
+    } else if (document.readyState === 'complete') {
+      playNudge(700);
+    } else {
+      window.addEventListener('load', function () { playNudge(700); }, { once: true });
+    }
   }
 
   /* ---------- Mobile sticky CTA: reveal once the hero CTAs scroll away ---------- */
