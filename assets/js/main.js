@@ -112,7 +112,13 @@ document.addEventListener('DOMContentLoaded', function () {
   var ctaTrigger = document.querySelector('.hero-actions') || document.querySelector('.hero');
   if (mobileCta && ctaTrigger && 'IntersectionObserver' in window) {
     var ctaObserver = new IntersectionObserver(function (entries) {
-      mobileCta.classList.toggle('visible', !entries[0].isIntersecting);
+      var e = entries[0];
+      // Show ONLY once the trigger has scrolled up past the top of the viewport.
+      // Checking boundingClientRect.top < 0 avoids the spurious "not intersecting"
+      // the observer can report on its first callback before layout settles, which
+      // otherwise flashes the bar visible on load.
+      var scrolledPast = !e.isIntersecting && e.boundingClientRect.top < 0;
+      mobileCta.classList.toggle('visible', scrolledPast);
     }, { threshold: 0 });
     ctaObserver.observe(ctaTrigger);
   } else if (mobileCta) {

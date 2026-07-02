@@ -393,10 +393,11 @@ input:focus-visible,
   .h-1 { font-size: 36px; }
   .h-2 { font-size: 28px; }
   .corner-accent { width: 60vw; }
-  /* Tighter hero + navbar on mobile so the hero copy and both CTAs fit above the
-     fold on a ~375px viewport. */
-  .hero { padding: 28px 0 40px; }
-  .navbar-inner { padding: 14px 20px; }
+  /* Tight hero + navbar on mobile so the hero copy and both CTAs fit above the
+     fold on a ~375px viewport. Small hero top padding closes the gap between the
+     navbar and the eyebrow. */
+  .hero { padding: 12px 0 32px; }
+  .navbar-inner { padding: 8px 20px; }
   /* Let long button labels wrap instead of overflowing their container. */
   .btn { white-space: normal; }
 }
