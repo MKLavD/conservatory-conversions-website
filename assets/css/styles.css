@@ -630,8 +630,13 @@ footer { background: var(--black); color: var(--white); }
   pointer-events: none;
 }
 /* Both columns are vertically centred against each other via align-items:center. */
-.hero-grid { display: grid; grid-template-columns: 3fr 2fr; gap: 56px; align-items: center; }
-@media (max-width: 1024px) { .hero-grid { grid-template-columns: 1fr; } }
+.hero-grid { display: grid; grid-template-columns: 3fr 2fr; gap: 56px; align-items: stretch; }
+/* Right (media) column fills the row height defined by the taller left copy
+   column, then flex-centres its own content (slider + caption + badges + rating)
+   vertically — giving clear space above the slider and below the rating. This
+   is more robust than relying on grid align-items to centre a shorter item. */
+.hero-media { display: flex; flex-direction: column; justify-content: center; }
+@media (max-width: 1024px) { .hero-grid { grid-template-columns: 1fr; } .hero-media { display: block; } }
 
 /* Before/After slider */
 .ba-slider {
