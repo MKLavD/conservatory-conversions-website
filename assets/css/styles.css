@@ -9,7 +9,7 @@
        url('../fonts/Ibrand.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
-  font-display: optional; /* with preload: use the font if ready, else fallback with no later swap — eliminates font-driven CLS */
+  font-display: swap;
 }
 
 /* Outfit — self-hosted (replaces the render-blocking Google Fonts request).
@@ -19,7 +19,7 @@
   src: url('../fonts/outfit/outfit.woff2') format('woff2');
   font-weight: 100 900;
   font-style: normal;
-  font-display: optional; /* with preload: use the font if ready, else fallback with no later swap — eliminates font-driven CLS */
+  font-display: swap;
 }
 
 :root {
