@@ -393,10 +393,6 @@ input:focus-visible,
   .h-1 { font-size: 36px; }
   .h-2 { font-size: 28px; }
   .corner-accent { width: 60vw; }
-  /* Tight hero + navbar on mobile so the hero copy and both CTAs fit above the
-     fold on a ~375px viewport (desktop keeps the roomier 80px top padding). */
-  .hero { padding: 20px 0 80px; }
-  .navbar-inner { padding: 8px 20px; }
   /* Let long button labels wrap instead of overflowing their container. */
   .btn { white-space: normal; }
 }
@@ -883,4 +879,14 @@ footer { background: var(--black); color: var(--white); }
   font-size: 14px;
   color: #444;
   line-height: 1.6;
+}
+
+/* Mobile overrides that MUST come after their base rules to win the cascade
+   (.hero and .navbar-inner are both defined later in this file than the main
+   mobile block above, so their tighter mobile padding is set here instead).
+   20px horizontal matches .container's mobile padding so the navbar logo/hamburger
+   align with the page content below. */
+@media (max-width: 880px) {
+  .hero { padding: 20px 0 80px; }
+  .navbar-inner { padding: 8px 20px; }
 }
