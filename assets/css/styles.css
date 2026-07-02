@@ -469,7 +469,7 @@ input:focus-visible,
 .navbar-inner {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 22px 32px;
+  padding: 10px 32px;
   display: flex;
   align-items: center;
   justify-content: space-between;
