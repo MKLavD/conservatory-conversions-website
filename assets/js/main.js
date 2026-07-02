@@ -105,6 +105,19 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('touchend', end);
   }
 
+  /* ---------- Mobile sticky CTA: reveal only after the hero scrolls away ---------- */
+  var mobileCta = document.querySelector('.mobile-cta-bar');
+  var heroSection = document.querySelector('.hero');
+  if (mobileCta && heroSection && 'IntersectionObserver' in window) {
+    var ctaObserver = new IntersectionObserver(function (entries) {
+      // Hero visible → keep bar hidden (hero CTAs are on screen). Hero gone → show bar.
+      mobileCta.classList.toggle('visible', !entries[0].isIntersecting);
+    }, { threshold: 0 });
+    ctaObserver.observe(heroSection);
+  } else if (mobileCta) {
+    mobileCta.classList.add('visible'); // no IO support: just show it
+  }
+
   /* ---------- Shared AJAX form submit (contact + brochure) ---------- */
   function submitForm(opts) {
     var form = opts.form;
