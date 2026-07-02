@@ -308,9 +308,47 @@ A batch of client-requested refinements, new photography, a full mobile-responsi
 
 ---
 
-## Stage 9 - Domain cutover (later, not yet planned in detail)
+## Stage 9 - Domain cutover
 
-Once the new site is live on a Vercel preview URL and approved, the existing domain (conservatoryconversions.co.uk) needs pointing at it. Not yet scoped - revisit once Stage 8 is done.
+**Goal:** point the live domain `conservatoryconversions.co.uk` (registered at GoDaddy) at the Vercel deployment, and — as a linked task — verify the domain in Resend so the contact/brochure forms can send from the real business address instead of the interim sandbox sender.
+
+There are **two independent DNS jobs**, both done at GoDaddy but for different services: (A) the **site** (Vercel) and (B) **email sending** (Resend). They can run in parallel, but each has its own internal order, and the `MAIL_FROM` env swap must come last (see dependencies).
+
+### A. Custom domain on Vercel
+
+1. **Add the domain in Vercel** — Project → Settings → Domains → add `conservatoryconversions.co.uk` **and** `www.conservatoryconversions.co.uk`. Vercel then displays the exact DNS records to create and shows each domain as "Invalid Configuration" until they resolve.
+2. **Add the DNS records at GoDaddy** (Domain → DNS → Manage Zones). GoDaddy does not support ALIAS/ANAME at the apex, so use Vercel's A-record method:
+   - **Apex** (`@`): `A` record → `76.76.21.21` (Vercel's anycast IP — but always use the value Vercel shows, in case it changes).
+   - **www**: `CNAME` → `cname.vercel-dns.com`.
+   - Decide the canonical host in Vercel (redirect `www` → apex, or vice-versa) — Vercel handles the 308 redirect automatically once both are added.
+   - Remove any old/conflicting `A`/`CNAME`/parking records GoDaddy had for `@`/`www` pointing at the previous host.
+3. **SSL** — automatic. Once DNS resolves, Vercel provisions and renews a Let's Encrypt certificate with no action needed. HTTPS + HTTP→HTTPS redirect are on by default.
+4. **Propagation** — usually minutes, up to ~24–48h worst case. Vercel flips the domain to "Valid Configuration" when ready. Verify the live site loads on the real domain over HTTPS.
+
+### B. Resend domain verification (for real-sender email)
+
+1. In **Resend** → Domains → add `conservatoryconversions.co.uk`. Resend generates DNS records — typically a **DKIM** record (`TXT`/`CNAME`), an **SPF** `TXT` (and an `MX` on a `send.` subdomain for return-path/feedback), and optionally a **DMARC** `TXT`.
+2. Add those exact records at **GoDaddy** DNS.
+3. Wait for Resend to show the domain as **Verified**.
+
+### C. Swap the mail env vars (LAST — depends on B)
+
+Once — and only once — the Resend domain shows **Verified**:
+
+- In Vercel → Settings → Environment Variables set:
+  - `MAIL_FROM` = `Conservatory Conversions <sales@conservatoryconversions.co.uk>`
+  - `MAIL_TO` = `sales@conservatoryconversions.co.uk`
+- **Redeploy** (env var changes only take effect on a new deployment).
+- Send a live test through both the contact form and the brochure modal; confirm delivery from the new address.
+
+### Order-of-operations dependencies
+
+- **A and B are independent** and can be done in parallel (both are just GoDaddy DNS edits), but keep their records straight — the site records (A) and the email records (B) are separate entries in the same zone.
+- **C depends on B.** Do **not** swap `MAIL_FROM` to `sales@…` before Resend reports the domain Verified — Resend rejects sends from an unverified from-domain, which would break the forms. Until then, the interim `onboarding@resend.dev` sender (Stage 5 default) keeps working, so there is **no delivery downtime**; the swap is a clean cutover after verification.
+- **C requires a redeploy** to pick up the new env values.
+- The site cutover (A) does **not** depend on email (B/C) — the site can go live on the real domain while email still uses the sandbox sender; swap the sender whenever Resend verifies.
+
+**Rollback:** if anything misbehaves, the Vercel `*.vercel.app` URL keeps working throughout, and reverting the GoDaddy A/CNAME records restores the previous state.
 
 ---
 
@@ -318,11 +356,14 @@ Once the new site is live on a Vercel preview URL and approved, the existing dom
 
 The current design is the client-approved baseline for getting the site live, not necessarily the final word. Once the core 10 pages are built and launched, expect a follow-up pass to revisit specific elements.
 
-**Already identified:**
+**Resolved during Stage 8.5:**
 
-- Hero section background image - currently text-only, no background photo
-- Before/after slider size and treatment - flagged during homepage build as worth reconsidering
-- step-01 through step-05 images - no source photos yet, placeholders in markup
-- Mixed title case vs sentence case in heading copy (low priority)
-- Cyan triangle graphic top-right may look disconnected at 1440px
-- Accreditation bar logos - if better source files become available for FENSA, FMB or Checkatrade (proper reversed/white-on-transparent versions), replace the current white-keyed PNGs generated by Claude Code
+- ~~Hero section background image~~ — **done**: `mainslider3.webp` (red tiled roof / blue sky) added behind a dark overlay, homepage-scoped.
+- ~~Before/after slider size and treatment~~ — **done**: enlarged to a 5:4 slider filling the right column, with a matched before/after pair.
+- ~~Cyan triangle graphic top-right~~ — **done**: removed from the homepage hero (clashed with the new photo background).
+
+**Still outstanding:**
+
+- **step-05 image** on `how-it-works.html` — no source photo yet; renders as a plain grey `.img-placeholder` box (step-01–04 were supplied in Stage 8.5). Drops straight into the existing path when the photo is supplied, no markup change.
+- **Accreditation bar logos** — if better source files become available for FENSA, FMB or Checkatrade (proper reversed / white-on-transparent versions), replace the current white-keyed PNGs generated by Claude Code.
+- Mixed title case vs sentence case in heading copy (low priority).
