@@ -164,10 +164,20 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       }, { threshold: 0.4 });
       nudgeObserver.observe(baSlider);
-    } else if (document.readyState === 'complete') {
-      playNudge(700);
     } else {
-      window.addEventListener('load', function () { playNudge(700); }, { once: true });
+      // Desktop: the slider is above the fold, so run on load — but gate behind
+      // requestIdleCallback so the ~3s animation starts only once the main thread
+      // is idle (after the initial render/measurement window), keeping it out of
+      // the Speed Index calculation. Falls back to a plain load trigger.
+      var startDesktopNudge = function () {
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(function () { playNudge(700); }, { timeout: 3000 });
+        } else {
+          playNudge(700);
+        }
+      };
+      if (document.readyState === 'complete') startDesktopNudge();
+      else window.addEventListener('load', startDesktopNudge, { once: true });
     }
   }
 
