@@ -54,11 +54,13 @@ const jobs = [
   // Matched before/after pair from one job — replaces the old before-1/after-1.
   { in: 'scraped/before.png',      out: 'before-1.webp',    max: 1200, q: 80 },
   { in: 'scraped/after.png',       out: 'after-1.webp',     max: 1200, q: 80 },
-  // How-it-works step placeholders (portrait 479x584; step-05 source pending).
-  { in: 'scraped/1.png',           out: 'step-01.webp',     max: 800,  q: 80 },
+  // How-it-works step images. step-01 and step-05 use real project photos
+  // (landscape) at 1000px; step-02–04 remain the earlier portrait placeholders.
+  { in: 'Before & After/IMG_6599.webp', out: 'step-01.webp', max: 1000, q: 80 },
   { in: 'scraped/2.png',           out: 'step-02.webp',     max: 800,  q: 80 },
   { in: 'scraped/3.png',           out: 'step-03.webp',     max: 800,  q: 80 },
   { in: 'scraped/4.png',           out: 'step-04.webp',     max: 800,  q: 80 },
+  { in: 'Before & After/IMG_3520.webp', out: 'step-05.webp', max: 1000, q: 80 },
 ];
 
 (async () => {
