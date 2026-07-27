@@ -71,7 +71,9 @@ function parsePage(raw) {
 
 // Add class="active" to the nav link whose href matches this page.
 function setActiveNav(headerHtml, pageFile) {
-  const escaped = pageFile.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  // The homepage nav link now points to "/" rather than "index.html".
+  const href = pageFile === 'index.html' ? '/' : pageFile;
+  const escaped = href.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const re = new RegExp('(<a href="' + escaped + '")( data-nav)', 'g');
   return headerHtml.replace(re, '$1$2 class="active"');
 }
