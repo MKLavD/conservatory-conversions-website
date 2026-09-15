@@ -270,6 +270,17 @@ document.addEventListener('DOMContentLoaded', function () {
     }, 300);
   }
 
+  // Trigger a direct download of the brochure PDF (in addition to the lead
+  // being emailed via /api/brochure) by clicking a throwaway <a download> link.
+  function downloadBrochurePdf() {
+    var link = document.createElement('a');
+    link.href = '/assets/brochure.pdf';
+    link.download = 'Conservatory-Conversions-Brochure.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
   if (brochureOpenBtn) brochureOpenBtn.addEventListener('click', openBrochure);
   if (brochureCloseBtn) brochureCloseBtn.addEventListener('click', closeBrochure);
   if (brochureBackdrop) {
@@ -293,6 +304,7 @@ document.addEventListener('DOMContentLoaded', function () {
         button: brochureSubmitBtn,
         endpoint: '/api/brochure',
         onSuccess: function () {
+          downloadBrochurePdf();
           brochureFormView.style.display = 'none';
           brochureSuccessView.style.display = 'block';
         }
