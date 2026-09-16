@@ -61,6 +61,29 @@ const jobs = [
   { in: 'scraped/3.png',           out: 'step-03.webp',     max: 800,  q: 80 },
   { in: 'scraped/4.png',           out: 'step-04.webp',     max: 800,  q: 80 },
   { in: 'Before & After/IMG_3520.webp', out: 'step-05.webp', max: 1000, q: 80 },
+
+  // --- New batch: roofing tiles & comparisons (conservatory-roofing.html / conservatory-conversion.html) ---
+  // Tile profiles — gallery-thumbnail tier (700-800px).
+  { in: 'Roofing Tiles and Comparisons/Liteslate.jpeg',   out: 'profile-liteslate.webp',  max: 800, q: 80 },
+  { in: 'Roofing Tiles and Comparisons/Shingle.jpeg',     out: 'profile-shingle.webp',    max: 800, q: 80 },
+  { in: 'Roofing Tiles and Comparisons/Slate 2000.jpeg',  out: 'profile-slate-2000.webp', max: 800, q: 80 },
+  { in: 'Roofing Tiles and Comparisons/Ultratile.jpeg',   out: 'profile-ultratile.webp',  max: 800, q: 80 },
+  { in: 'Roofing Tiles and Comparisons/Villatile.jpeg',   out: 'profile-villatile.webp',  max: 800, q: 80 },
+  { in: 'Roofing Tiles and Comparisons/Profile 49.jpeg',  out: 'profile-49.webp',         max: 800, q: 80 },
+  // Tile colours — gallery-thumbnail tier (700-800px).
+  { in: 'Roofing Tiles and Comparisons/1 Black.jpeg',       out: 'colour-black.webp',      max: 800, q: 80 },
+  { in: 'Roofing Tiles and Comparisons/2 Charcoal.jpeg',    out: 'colour-charcoal.webp',   max: 800, q: 80 },
+  { in: 'Roofing Tiles and Comparisons/3 Brown.jpeg',       out: 'colour-brown.webp',      max: 800, q: 80 },
+  { in: 'Roofing Tiles and Comparisons/4 terracotta.jpeg',  out: 'colour-terracotta.webp', max: 800, q: 80 },
+  { in: 'Roofing Tiles and Comparisons/5 Red.jpeg',         out: 'colour-red.webp',        max: 800, q: 80 },
+  { in: 'Roofing Tiles and Comparisons/6 Green.jpeg',       out: 'colour-green.webp',      max: 800, q: 80 },
+  // Extra before/after pairs — inline-content tier (1000-1200px), matches before-1/after-1 treatment.
+  { in: 'Roofing Tiles and Comparisons/1_before_terracotta.jpg_20260915151659.jpeg', out: 'before-terracotta.webp', max: 1200, q: 80 },
+  { in: 'Roofing Tiles and Comparisons/2_after_terracotta.jpg_20260915151510.jpeg',  out: 'after-terracotta.webp',  max: 1200, q: 80 },
+  { in: 'Roofing Tiles and Comparisons/03_before_charcoal.jpg_20260915151355.jpeg',  out: 'before-charcoal.webp',   max: 1200, q: 80 },
+  { in: 'Roofing Tiles and Comparisons/04_after_charcoal.jpg_20260915151516.jpeg',   out: 'after-charcoal.webp',    max: 1200, q: 80 },
+  { in: 'Roofing Tiles and Comparisons/05_before_red.jpg_20260915151523.jpeg',       out: 'before-red.webp',        max: 1200, q: 80 },
+  { in: 'Roofing Tiles and Comparisons/06_after_red.jpg_20260915151458.jpeg',        out: 'after-red.webp',         max: 1200, q: 80 },
 ];
 
 (async () => {
