@@ -865,6 +865,7 @@ footer { background: var(--black); color: var(--white); }
   color: white;
 }
 .compare-table td:first-child { font-weight: 600; }
+.compare-table th:not(:first-child), .compare-table td:not(:first-child) { text-align: center; }
 .compare-table .col-recommended { background: rgba(0, 191, 255, 0.08); border-left: 3px solid var(--orange); border-right: 3px solid var(--orange); }
 .compare-table th.col-recommended { background: var(--orange); color: var(--black); }
 
