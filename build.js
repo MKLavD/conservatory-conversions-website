@@ -119,7 +119,11 @@ function build() {
       '<head>\n' +
       headFilled.trim() + '\n' +
       '</head>\n' +
-      '<body>\n\n' +
+      '<body>\n' +
+      '<!-- Google Tag Manager (noscript) -->\n' +
+      '<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K322548W"\n' +
+      'height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>\n' +
+      '<!-- End Google Tag Manager (noscript) -->\n\n' +
       headerFilled.trim() + '\n\n' +
       body + '\n\n' +
       footer.trim() + '\n' +
