@@ -35,6 +35,63 @@
   </div>
 </div>
 
+<!-- ===================== COOKIE SETTINGS MODAL ===================== -->
+<div class="modal-backdrop" id="ccSettingsBackdrop" style="display:none">
+  <div class="modal" id="ccSettingsModal">
+    <button class="close-btn" id="ccSettingsCloseBtn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></button>
+
+    <h3 class="h-2" style="margin-bottom:8px">Cookie Settings</h3>
+    <p style="color:#666;margin-bottom:24px;font-size:14px">Choose which cookies you're happy for us to use. You can change this at any time from the link in our footer.</p>
+
+    <div class="cc-toggle-row">
+      <div>
+        <strong>Strictly Necessary</strong>
+        <p>Required for the site to work – always on.</p>
+      </div>
+      <label class="cc-toggle disabled">
+        <input type="checkbox" checked disabled>
+        <span class="cc-toggle-slider"></span>
+      </label>
+    </div>
+
+    <div class="cc-toggle-row">
+      <div>
+        <strong>Analytics</strong>
+        <p>Google Analytics (GA4) – helps us understand how the site is used.</p>
+      </div>
+      <label class="cc-toggle">
+        <input type="checkbox" id="ccAnalyticsToggle">
+        <span class="cc-toggle-slider"></span>
+      </label>
+    </div>
+
+    <div class="cc-toggle-row">
+      <div>
+        <strong>Advertising</strong>
+        <p>Google Ads – measures ad performance and personalises ads.</p>
+      </div>
+      <label class="cc-toggle">
+        <input type="checkbox" id="ccAdvertisingToggle">
+        <span class="cc-toggle-slider"></span>
+      </label>
+    </div>
+
+    <button type="button" id="ccSaveBtn" class="btn btn-orange" style="width:100%;padding:16px;margin-top:8px">Save Preferences</button>
+  </div>
+</div>
+
+<!-- ===================== COOKIE CONSENT BANNER ===================== -->
+<div class="cc-banner" id="ccBanner" style="display:none">
+  <div class="cc-banner-inner">
+    <p class="cc-banner-text">We use cookies to improve your experience and measure site performance. Choose which you're happy with below.</p>
+    <div class="cc-banner-actions">
+      <button type="button" id="ccSettingsOpenBtn" class="cc-link-btn" data-cc-open-settings>Cookie Settings</button>
+      <button type="button" id="ccRejectBtn" class="btn btn-outline-white">Reject Non-Essential</button>
+      <button type="button" id="ccAcceptBtn" class="btn btn-orange">Accept All</button>
+    </div>
+  </div>
+</div>
+
 <!-- ===================== FOOTER ===================== -->
 <footer>
   <div class="container">
@@ -106,6 +163,7 @@
   <div class="container">
     <div class="footer-bottom">
       © <span id="footerYear"></span> Conservatory Conversions. All rights reserved. Registered in Northern Ireland.
+      · <button type="button" class="cc-link-btn cc-footer-link" data-cc-open-settings>Cookie Settings</button>
     </div>
   </div>
 </footer>
@@ -116,3 +174,4 @@
 </div>
 
 <script src="assets/js/main.js" defer></script>
+<script src="assets/js/consent.js" defer></script>
